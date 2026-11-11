@@ -37,7 +37,7 @@ const DEFAULT_ACCOUNTS: StoredAccount[] = [
     role: "User",
     friendsCount: 14,
     website: "https://github.com",
-    bannerGradient: "from-teal-600 to-emerald-700",
+    bannerGradient: "from-[#1D4ED8] via-[#2563EB] to-[#3B82F6]",
     roomsJoined: ["general-chat", "late-night-talks", "music-lovers"],
   },
   {
@@ -228,7 +228,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       role: "User",
       friendsCount: 0,
       website: "",
-      bannerGradient: "from-teal-600 to-cyan-700",
+      bannerGradient: "from-[#1E40AF] to-[#2563EB]",
       roomsJoined: ["general-chat"],
     };
 
@@ -362,7 +362,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         username: foundStored.username,
         email: foundStored.email,
         avatar: foundStored.avatar,
-        bannerGradient: foundStored.bannerGradient || "from-teal-600 to-emerald-700",
+        bannerGradient: foundStored.bannerGradient || "from-[#1D4ED8] via-[#2563EB] to-[#3B82F6]",
         isGuest: false,
         joinedAt: foundStored.joinedAt || "October 2026",
         bio: foundStored.bio || "ChatVerse community member.",
@@ -417,7 +417,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       username: a.username,
       email: a.email,
       avatar: a.avatar,
-      bannerGradient: a.bannerGradient || "from-teal-600 to-emerald-700",
+      bannerGradient: a.bannerGradient || "from-[#1D4ED8] via-[#2563EB] to-[#3B82F6]",
       isGuest: false,
       joinedAt: a.joinedAt,
       bio: a.bio,

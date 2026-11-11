@@ -331,7 +331,7 @@ export default function VideoCallPage() {
           STATE 1: IDLE LOBBY (Lobby Screen with Camera Preview & Controls)
           ========================================================================= */}
       {sessionState === "idle" && (
-        <div className="flex-1 overflow-y-auto flex items-center justify-center p-4 sm:p-6 bg-[#F8FAFC] text-[#1E293B]">
+        <div className="flex-1 overflow-y-auto flex items-center justify-center p-4 sm:p-6 bg-[#F8FAFC] text-[#0F172A]">
           <div className="max-w-4xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left: Camera Preview Box */}
             <div className="lg:col-span-7 bg-white p-6 rounded-3xl border border-[#E2E8F0] shadow-sm">
@@ -423,7 +423,7 @@ export default function VideoCallPage() {
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Next-Gen Video Experience</span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1E293B] tracking-tight mb-2">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight mb-2">
                   Start Video Call
                 </h1>
                 <p className="text-xs sm:text-sm text-[#64748B] leading-relaxed">
@@ -433,7 +433,7 @@ export default function VideoCallPage() {
 
               {/* Topic Selector */}
               <div>
-                <label className="block text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-2.5">
+                <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-2.5">
                   Select Matching Topic:
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -472,7 +472,7 @@ export default function VideoCallPage() {
                 <button
                   type="button"
                   onClick={() => startMatching("group")}
-                  className="w-full py-3 px-6 rounded-2xl bg-white hover:bg-slate-50 border border-[#E2E8F0] text-[#1E293B] text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3 px-6 rounded-2xl bg-white hover:bg-slate-50 border border-[#E2E8F0] text-[#0F172A] text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Users className="w-4 h-4 text-[#2563EB]" />
                   <span>Join Community Group Call</span>
@@ -578,8 +578,8 @@ export default function VideoCallPage() {
             <div className="flex-1 min-w-0 p-3 sm:p-4 flex flex-col justify-center items-center relative overflow-hidden bg-slate-950">
               {/* Screen Share Banner */}
               {isScreenSharing && (
-                <div className="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-teal-950/80 border border-teal-500/40 text-teal-300 text-xs font-semibold flex items-center gap-2">
-                  <Monitor className="w-3.5 h-3.5 text-teal-400 animate-pulse" />
+                <div className="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-blue-950/80 border border-blue-500/40 text-blue-300 text-xs font-semibold flex items-center gap-2">
+                  <Monitor className="w-3.5 h-3.5 text-blue-400 animate-pulse" />
                   <span>You are sharing your screen</span>
                 </div>
               )}
@@ -594,21 +594,21 @@ export default function VideoCallPage() {
 
               {/* Video Layout: Spotlight Mode */}
               {layoutMode === "spotlight" && (
-                <div className="relative w-full h-full max-w-5xl rounded-3xl overflow-hidden border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-teal-950 flex items-center justify-center shadow-2xl">
+                <div className="relative w-full h-full max-w-5xl rounded-3xl overflow-hidden border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-blue-950 flex items-center justify-center shadow-2xl">
                   {/* Remote Primary Stream Avatar & Visualization */}
                   <div className="flex flex-col items-center justify-center text-center p-6">
                     <div className="relative mb-4">
-                      <div className="w-32 sm:w-40 h-32 sm:h-40 rounded-3xl bg-slate-800/90 border-2 border-teal-500/40 flex items-center justify-center text-6xl sm:text-7xl shadow-2xl backdrop-blur-md ring-4 ring-teal-500/10">
+                      <div className="w-32 sm:w-40 h-32 sm:h-40 rounded-3xl bg-slate-800/90 border-2 border-[#2563EB]/40 flex items-center justify-center text-6xl sm:text-7xl shadow-2xl backdrop-blur-md ring-4 ring-[#2563EB]/10">
                         {partner?.avatar || "👩‍🦰"}
                       </div>
-                      <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-[#22C55E] border-2 border-slate-900" />
+                      <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-[#10B981] border-2 border-slate-900 animate-pulse" />
                     </div>
 
                     <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
                       {partner?.name || "Riya Sharma"}
                     </h3>
-                    <p className="text-xs text-teal-400 mt-1 flex items-center gap-1.5">
-                      <MapPin className="w-3 h-3 text-teal-500" />
+                    <p className="text-xs text-blue-400 mt-1 flex items-center gap-1.5">
+                      <MapPin className="w-3 h-3 text-blue-500" />
                       <span>{partner?.location || "Mumbai, India"}</span>
                       <span>&bull;</span>
                       <span>Speaking</span>
@@ -654,11 +654,11 @@ export default function VideoCallPage() {
                 <div className="w-full h-full max-w-5xl grid grid-cols-2 gap-3 sm:gap-4 p-2">
                   {/* Remote Tile 1 */}
                   <div className="relative rounded-2xl bg-slate-900 border border-slate-800 flex flex-col items-center justify-center overflow-hidden shadow-lg">
-                    <div className="w-20 sm:w-24 h-20 sm:h-24 rounded-2xl bg-slate-800 border border-teal-500/30 flex items-center justify-center text-4xl sm:text-5xl mb-2">
+                    <div className="w-20 sm:w-24 h-20 sm:h-24 rounded-2xl bg-slate-800 border border-blue-500/30 flex items-center justify-center text-4xl sm:text-5xl mb-2">
                       {partner?.avatar || "👩‍🦰"}
                     </div>
                     <span className="text-xs font-bold text-white">{partner?.name || "Riya"}</span>
-                    <span className="absolute bottom-2 left-3 text-[10px] text-teal-400 flex items-center gap-1">
+                    <span className="absolute bottom-2 left-3 text-[10px] text-blue-400 flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                       Active
                     </span>
@@ -1064,17 +1064,17 @@ export default function VideoCallPage() {
           STATE 4: CALL ENDED SUMMARY
           ========================================================================= */}
       {sessionState === "ended" && (
-        <div className="flex-1 flex items-center justify-center p-6 bg-[#F8FAFC] text-[#1E293B]">
+        <div className="flex-1 flex items-center justify-center p-6 bg-[#F8FAFC] text-[#0F172A]">
           <div className="bg-white rounded-3xl border border-[#E2E8F0] p-8 sm:p-10 shadow-sm text-center max-w-md w-full animate-in fade-in">
             <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-100 shadow-2xs">
               <Check className="w-7 h-7" />
             </div>
 
-            <h3 className="text-xl font-bold text-[#1E293B] mb-1">
+            <h3 className="text-xl font-bold text-[#0F172A] mb-1">
               Video Call Ended
             </h3>
             <p className="text-xs text-[#64748B] mb-6">
-              Total duration: <span className="font-bold text-[#1E293B]">{formatDuration(callDuration)}</span> with {partner?.name || "Community Partner"}.
+              Total duration: <span className="font-bold text-[#0F172A]">{formatDuration(callDuration)}</span> with {partner?.name || "Community Partner"}.
             </p>
 
             <div className="flex flex-col gap-3">

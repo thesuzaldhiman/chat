@@ -79,7 +79,7 @@ export default function NotificationDropdown({ isOpen, onClose }: NotificationDr
       <div className="p-3.5 border-b border-[#E2E8F0] flex items-center justify-between bg-[#F8FAFC]">
         <div className="flex items-center gap-2">
           <Bell className="w-4 h-4 text-[#2563EB]" />
-          <h3 className="text-xs font-bold text-[#1E293B]">Notifications</h3>
+          <h3 className="text-xs font-bold text-[#0F172A]">Notifications</h3>
           {unreadCount > 0 && (
             <span className="px-1.5 py-0.2 rounded-full bg-[#2563EB] text-white text-[10px] font-bold">
               {unreadCount}
@@ -107,7 +107,7 @@ export default function NotificationDropdown({ isOpen, onClose }: NotificationDr
           className={`py-2 px-2.5 border-b-2 transition-colors cursor-pointer ${
             activeTab === "all"
               ? "border-[#2563EB] text-[#2563EB] font-bold"
-              : "border-transparent text-[#64748B] hover:text-[#1E293B]"
+              : "border-transparent text-[#64748B] hover:text-[#0F172A]"
           }`}
         >
           All ({notifications.length})
@@ -118,7 +118,7 @@ export default function NotificationDropdown({ isOpen, onClose }: NotificationDr
           className={`py-2 px-2.5 border-b-2 transition-colors cursor-pointer ${
             activeTab === "unread"
               ? "border-[#2563EB] text-[#2563EB] font-bold"
-              : "border-transparent text-[#64748B] hover:text-[#1E293B]"
+              : "border-transparent text-[#64748B] hover:text-[#0F172A]"
           }`}
         >
           Unread ({unreadCount})
@@ -130,7 +130,7 @@ export default function NotificationDropdown({ isOpen, onClose }: NotificationDr
         {displayedNotifications.length === 0 ? (
           <div className="p-8 text-center text-xs text-[#64748B]">
             <Bell className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-            <p className="font-semibold text-[#1E293B]">All caught up!</p>
+            <p className="font-semibold text-[#0F172A]">All caught up!</p>
             <p className="text-[11px] text-[#94A3B8] mt-0.5">No notifications right now.</p>
           </div>
         ) : (
@@ -160,14 +160,14 @@ export default function NotificationDropdown({ isOpen, onClose }: NotificationDr
                     </div>
                   )}
                   {!notif.read && (
-                    <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#22C55E] ring-2 ring-white" />
+                    <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#10B981] ring-2 ring-white" />
                   )}
                 </div>
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-1">
-                    <p className="text-xs font-bold text-[#1E293B] truncate">
+                    <p className="text-xs font-bold text-[#0F172A] truncate">
                       {notif.title}
                     </p>
                     <span className="text-[10px] text-[#94A3B8] flex-shrink-0">

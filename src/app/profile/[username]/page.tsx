@@ -90,11 +90,11 @@ export default function PublicProfilePage() {
           <div className="w-12 h-12 rounded-full bg-slate-100 text-[#64748B] flex items-center justify-center mx-auto mb-4">
             <UserIcon className="w-6 h-6" />
           </div>
-          <h2 className="text-xl font-bold text-[#1E293B] mb-2">
+          <h2 className="text-xl font-bold text-[#0F172A] mb-2">
             User Not Found
           </h2>
           <p className="text-xs text-[#64748B] mb-6">
-            We couldn&apos;t find a member with the handle <span className="font-semibold text-[#1E293B]">@{username}</span>.
+            We couldn&apos;t find a member with the handle <span className="font-semibold text-[#0F172A]">@{username}</span>.
           </p>
           <div className="flex gap-3 justify-center">
             <Link
@@ -118,7 +118,7 @@ export default function PublicProfilePage() {
           <button
             type="button"
             onClick={() => router.back()}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#1E293B] transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back</span>
@@ -130,7 +130,7 @@ export default function PublicProfilePage() {
           {/* Header Banner */}
           <div
             className={`h-36 sm:h-44 bg-gradient-to-r ${
-              profile.bannerGradient || "from-teal-600 via-[#2563EB] to-emerald-700"
+              profile.bannerGradient || "from-[#1D4ED8] via-[#2563EB] to-[#3B82F6]"
             } relative`}
           >
             <div className="absolute inset-0 bg-black/10" />
@@ -159,7 +159,7 @@ export default function PublicProfilePage() {
                   </div>
                   {profile.isOnline && (
                     <span
-                      className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-[#22C55E] border-2 border-white"
+                      className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-[#10B981] border-2 border-white ring-1 ring-[#10B981]/20 animate-pulse"
                       title="Online"
                     />
                   )}
@@ -167,14 +167,14 @@ export default function PublicProfilePage() {
 
                 <div className="mb-2">
                   <div className="flex items-center gap-2">
-                    <h1 className="text-xl sm:text-2xl font-bold text-[#1E293B] tracking-tight">
+                    <h1 className="text-xl sm:text-2xl font-bold text-[#0F172A] tracking-tight">
                       {profile.name}
                     </h1>
                     <span
                       className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg flex items-center gap-1 ${
                         profile.role === "Moderator"
                           ? "bg-amber-50 text-amber-700 border border-amber-200"
-                          : "bg-[#EFF6FF] text-[#2563EB] border border-[#d0ece8]"
+                          : "bg-[#EFF6FF] text-[#2563EB] border border-[#EFF6FF]"
                       }`}
                     >
                       {profile.role === "Moderator" && <Shield className="w-3 h-3" />}
@@ -192,7 +192,7 @@ export default function PublicProfilePage() {
                 <button
                   type="button"
                   onClick={handleShare}
-                  className="p-2 rounded-xl border border-[#E2E8F0] hover:bg-slate-50 text-[#64748B] hover:text-[#1E293B] transition-colors cursor-pointer"
+                  className="p-2 rounded-xl border border-[#E2E8F0] hover:bg-slate-50 text-[#64748B] hover:text-[#0F172A] transition-colors cursor-pointer"
                   title="Share profile"
                 >
                   <Share2 className="w-4 h-4" />
@@ -252,7 +252,7 @@ export default function PublicProfilePage() {
 
                     <Link
                       href={`/messages?user=${profile.username}`}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#d8ece8] rounded-xl transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#DBEAFE] rounded-xl transition-colors cursor-pointer"
                     >
                       <MessageSquare className="w-3.5 h-3.5" />
                       <span>Message</span>
@@ -265,19 +265,19 @@ export default function PublicProfilePage() {
             {/* Stats Bar */}
             <div className="grid grid-cols-3 gap-3 p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl mb-6 text-center">
               <div>
-                <p className="text-base font-bold text-[#1E293B]">
+                <p className="text-base font-bold text-[#0F172A]">
                   {profile.friendsCount + (status === "friends" ? 1 : 0)}
                 </p>
                 <p className="text-[11px] text-[#64748B]">Friends</p>
               </div>
               <div>
-                <p className="text-base font-bold text-[#1E293B]">
+                <p className="text-base font-bold text-[#0F172A]">
                   {profile.mutualFriendsCount || 0}
                 </p>
                 <p className="text-[11px] text-[#64748B]">Mutual Friends</p>
               </div>
               <div>
-                <p className="text-base font-bold text-[#1E293B]">
+                <p className="text-base font-bold text-[#0F172A]">
                   {profile.roomsJoined ? profile.roomsJoined.length : 2}
                 </p>
                 <p className="text-[11px] text-[#64748B]">Rooms Joined</p>
@@ -286,7 +286,7 @@ export default function PublicProfilePage() {
 
             {/* About / Bio */}
             <div className="mb-6">
-              <h3 className="text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-2">
+              <h3 className="text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-2">
                 About
               </h3>
               <p className="text-xs sm:text-sm text-[#334155] leading-relaxed bg-[#F8FAFC] p-4 rounded-xl border border-[#E2E8F0]">
@@ -301,7 +301,7 @@ export default function PublicProfilePage() {
                   <MapPin className="w-4 h-4 text-[#2563EB]" />
                   <div>
                     <p className="text-[10px] text-[#64748B]">Location</p>
-                    <p className="text-xs font-semibold text-[#1E293B]">{profile.location}</p>
+                    <p className="text-xs font-semibold text-[#0F172A]">{profile.location}</p>
                   </div>
                 </div>
               )}
@@ -310,7 +310,7 @@ export default function PublicProfilePage() {
                 <Calendar className="w-4 h-4 text-[#2563EB]" />
                 <div>
                   <p className="text-[10px] text-[#64748B]">Joined</p>
-                  <p className="text-xs font-semibold text-[#1E293B]">{profile.joinedAt}</p>
+                  <p className="text-xs font-semibold text-[#0F172A]">{profile.joinedAt}</p>
                 </div>
               </div>
 
@@ -335,14 +335,14 @@ export default function PublicProfilePage() {
             {/* Interests & Topics */}
             {profile.interests && profile.interests.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-2">
+                <h3 className="text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-2">
                   Interests &amp; Topics
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.interests.map((interest) => (
                     <span
                       key={interest}
-                      className="px-3 py-1 bg-[#EFF6FF] text-[#2563EB] border border-[#d2ece7] rounded-xl text-xs font-semibold"
+                      className="px-3 py-1 bg-[#EFF6FF] text-[#2563EB] border border-[#EFF6FF] rounded-xl text-xs font-semibold"
                     >
                       #{interest}
                     </span>
@@ -353,7 +353,7 @@ export default function PublicProfilePage() {
 
             {/* Communities & Rooms */}
             <div>
-              <h3 className="text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-3">
+              <h3 className="text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-3">
                 Communities &amp; Chat Rooms
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -370,13 +370,13 @@ export default function PublicProfilePage() {
                         {room.initials}
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-[#1E293B]">{room.name}</p>
+                        <p className="text-xs font-bold text-[#0F172A]">{room.name}</p>
                         <p className="text-[10px] text-[#64748B]">{room.onlineCount.toLocaleString()} members online</p>
                       </div>
                     </div>
                     <Link
                       href={`/rooms/${room.slug}`}
-                      className="px-3 py-1.5 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#d5eee9] rounded-lg transition-colors"
+                      className="px-3 py-1.5 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#DBEAFE] rounded-lg transition-colors"
                     >
                       Chat
                     </Link>

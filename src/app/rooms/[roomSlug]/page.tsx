@@ -262,7 +262,7 @@ export default function PixelPerfectChatRoom() {
   };
 
   return (
-    <div className="h-screen h-[100dvh] w-full overflow-hidden flex flex-col bg-[#F8FAFC] select-none text-[#1E293B]">
+    <div className="h-screen h-[100dvh] w-full overflow-hidden flex flex-col bg-[#F8FAFC] select-none text-[#0F172A]">
       {/* =========================================================================
           TOP NAVIGATION BAR (Exact replica of ChatVerse header)
           ========================================================================= */}
@@ -271,7 +271,7 @@ export default function PixelPerfectChatRoom() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMobileRoomsOpen(!mobileRoomsOpen)}
-            className="p-1 rounded-md text-[#64748B] hover:text-[#1E293B] md:hidden"
+            className="p-1 rounded-md text-[#64748B] hover:text-[#0F172A] md:hidden"
             aria-label="Toggle rooms drawer"
           >
             <Menu className="w-5 h-5" />
@@ -288,7 +288,7 @@ export default function PixelPerfectChatRoom() {
                 priority
               />
             </div>
-            <span className="text-[19px] font-bold tracking-tight text-[#1E293B]">
+            <span className="text-[19px] font-bold tracking-tight text-[#0F172A]">
               ChatVerse
             </span>
           </Link>
@@ -298,7 +298,7 @@ export default function PixelPerfectChatRoom() {
         <nav className="hidden md:flex items-center gap-5 lg:gap-7">
           <Link
             href="/"
-            className="flex items-center gap-1.5 text-xs font-semibold text-[#475569] hover:text-[#1E293B] transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#475569] hover:text-[#0F172A] transition-colors"
           >
             <Home className="w-4 h-4 stroke-[1.8]" />
             <span>Home</span>
@@ -315,7 +315,7 @@ export default function PixelPerfectChatRoom() {
 
           <Link
             href="/random-chat"
-            className="flex items-center gap-1.5 text-xs font-semibold text-[#475569] hover:text-[#1E293B] transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#475569] hover:text-[#0F172A] transition-colors"
           >
             <Shuffle className="w-4 h-4 stroke-[1.8]" />
             <span>Random Chat</span>
@@ -323,7 +323,7 @@ export default function PixelPerfectChatRoom() {
 
           <Link
             href="/random-video"
-            className="flex items-center gap-1.5 text-xs font-semibold text-[#475569] hover:text-[#1E293B] transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#475569] hover:text-[#0F172A] transition-colors"
           >
             <Video className="w-4 h-4 stroke-[1.8]" />
             <span>Video Call</span>
@@ -331,7 +331,7 @@ export default function PixelPerfectChatRoom() {
 
           <Link
             href="/random-voice"
-            className="flex items-center gap-1.5 text-xs font-semibold text-[#475569] hover:text-[#1E293B] transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#475569] hover:text-[#0F172A] transition-colors"
           >
             <Mic className="w-4 h-4 stroke-[1.8]" />
             <span>Voice Call</span>
@@ -357,7 +357,7 @@ export default function PixelPerfectChatRoom() {
             >
               <Bell className="w-[18px] h-[18px] stroke-[1.9]" />
               {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full bg-[#22C55E] text-white text-[9px] font-bold flex items-center justify-center">
+                <span className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full bg-[#10B981] text-white text-[9px] font-bold flex items-center justify-center">
                   {unreadCount}
                 </span>
               )}
@@ -382,7 +382,7 @@ export default function PixelPerfectChatRoom() {
                 <span>{user?.avatar || (user ? user.name[0] : "G")}</span>
               )}
             </div>
-            <ChevronDown className="w-3.5 h-3.5 text-[#64748B] group-hover:text-[#1E293B]" />
+            <ChevronDown className="w-3.5 h-3.5 text-[#64748B] group-hover:text-[#0F172A]" />
           </Link>
         </div>
       </header>
@@ -411,7 +411,7 @@ export default function PixelPerfectChatRoom() {
           {/* Top Nav Links & Rooms */}
           <div className="flex flex-col gap-1 min-h-0 overflow-y-auto">
             <div className="md:hidden flex items-center justify-between pb-2 border-b border-slate-200 mb-2">
-              <span className="font-bold text-sm text-[#1E293B]">Menu</span>
+              <span className="font-bold text-sm text-[#0F172A]">Menu</span>
               <button onClick={() => setMobileRoomsOpen(false)} className="p-1 text-[#64748B]">
                 <X className="w-4 h-4" />
               </button>
@@ -419,7 +419,7 @@ export default function PixelPerfectChatRoom() {
 
             <Link
               href="/"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[#1E293B] hover:bg-slate-100/70 transition-colors"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[#0F172A] hover:bg-slate-100/70 transition-colors"
             >
               <Home className="w-4 h-4 text-[#334155] stroke-[2]" />
               <span>Home</span>
@@ -427,7 +427,7 @@ export default function PixelPerfectChatRoom() {
 
             <Link
               href="/rooms"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[#1E293B] hover:bg-slate-100/70 transition-colors"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[#0F172A] hover:bg-slate-100/70 transition-colors"
             >
               <MessageSquare className="w-4 h-4 text-[#334155] stroke-[2]" />
               <span>Explore Rooms</span>
@@ -435,7 +435,7 @@ export default function PixelPerfectChatRoom() {
 
             <Link
               href="/rooms"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[#1E293B] hover:bg-slate-100/70 transition-colors"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-[#0F172A] hover:bg-slate-100/70 transition-colors"
             >
               <Home className="w-4 h-4 text-[#334155] stroke-[2]" />
               <span>My Rooms</span>
@@ -443,7 +443,7 @@ export default function PixelPerfectChatRoom() {
 
             {/* Section: Your Chat Rooms */}
             <div className="mt-5 mb-2 px-3">
-              <h3 className="text-xs font-bold text-[#1E293B]">Your Chat Rooms</h3>
+              <h3 className="text-xs font-bold text-[#0F172A]">Your Chat Rooms</h3>
             </div>
 
             <div className="space-y-1">
@@ -456,7 +456,7 @@ export default function PixelPerfectChatRoom() {
                     onClick={() => setMobileRoomsOpen(false)}
                     className={`flex items-center gap-2.5 px-2.5 py-2 rounded-xl transition-all ${
                       isSelected
-                        ? "bg-[#EFF6FF] border border-[#D3EDED] text-[#1E293B]"
+                        ? "bg-[#EFF6FF] border border-[#BFDBFE] text-[#0F172A]"
                         : "hover:bg-slate-100/60 text-[#334155]"
                     }`}
                   >
@@ -493,7 +493,7 @@ export default function PixelPerfectChatRoom() {
                   )}
                 </div>
                 <div className="min-w-0">
-                  <div className="text-xs font-bold text-[#1E293B] truncate leading-tight">
+                  <div className="text-xs font-bold text-[#0F172A] truncate leading-tight">
                     {user?.name || "Guest_9842"}
                   </div>
                   <div className="text-[10px] text-[#94A3B8] leading-tight">
@@ -510,7 +510,7 @@ export default function PixelPerfectChatRoom() {
                     openAuthModal("guest");
                   }
                 }}
-                className="p-1 text-[#64748B] hover:text-[#1E293B] transition-colors cursor-pointer"
+                className="p-1 text-[#64748B] hover:text-[#0F172A] transition-colors cursor-pointer"
                 title={user && !user.isGuest ? "Edit Profile" : "Edit Guest Nickname"}
               >
                 <Pencil className="w-3.5 h-3.5 stroke-[2]" />
@@ -537,14 +537,14 @@ export default function PixelPerfectChatRoom() {
 
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <h1 className="text-base sm:text-[17px] font-bold text-[#1E293B] truncate">
+                  <h1 className="text-base sm:text-[17px] font-bold text-[#0F172A] truncate">
                     Love Chat ❤️
                   </h1>
                 </div>
 
                 <div className="flex items-center gap-3 mt-0.5 flex-wrap">
                   <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] text-[11px] font-semibold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]"></span>
                     Public Room
                   </span>
                   <span className="text-[11px] text-[#64748B] font-medium flex items-center gap-1">
@@ -564,7 +564,7 @@ export default function PixelPerfectChatRoom() {
               <button
                 type="button"
                 onClick={() => setMobileInfoOpen(true)}
-                className="w-8 h-8 rounded-full border border-[#E2E8F0] flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-slate-50 transition-colors"
+                className="w-8 h-8 rounded-full border border-[#E2E8F0] flex items-center justify-center text-[#64748B] hover:text-[#0F172A] hover:bg-slate-50 transition-colors"
                 title="Room Info"
               >
                 <Info className="w-4 h-4 stroke-[1.9]" />
@@ -573,7 +573,7 @@ export default function PixelPerfectChatRoom() {
               <button
                 type="button"
                 onClick={handleInvite}
-                className="w-8 h-8 rounded-full border border-[#E2E8F0] flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-slate-50 transition-colors"
+                className="w-8 h-8 rounded-full border border-[#E2E8F0] flex items-center justify-center text-[#64748B] hover:text-[#0F172A] hover:bg-slate-50 transition-colors"
                 title="Share Room"
               >
                 <Share2 className="w-4 h-4 stroke-[1.9]" />
@@ -581,7 +581,7 @@ export default function PixelPerfectChatRoom() {
 
               <button
                 type="button"
-                className="w-8 h-8 rounded-full border border-[#E2E8F0] flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-slate-50 transition-colors"
+                className="w-8 h-8 rounded-full border border-[#E2E8F0] flex items-center justify-center text-[#64748B] hover:text-[#0F172A] hover:bg-slate-50 transition-colors"
                 title="More Options"
               >
                 <MoreVertical className="w-4 h-4 stroke-[1.9]" />
@@ -597,7 +597,7 @@ export default function PixelPerfectChatRoom() {
               className={`pt-2.5 pb-2 border-b-2 flex items-center gap-1.5 transition-colors cursor-pointer ${
                 activeTab === "chat"
                   ? "border-[#2563EB] text-[#2563EB]"
-                  : "border-transparent text-[#64748B] hover:text-[#1E293B]"
+                  : "border-transparent text-[#64748B] hover:text-[#0F172A]"
               }`}
             >
               <MessageSquare className="w-3.5 h-3.5 stroke-[2]" />
@@ -610,7 +610,7 @@ export default function PixelPerfectChatRoom() {
               className={`pt-2.5 pb-2 border-b-2 flex items-center gap-1.5 transition-colors cursor-pointer ${
                 activeTab === "members"
                   ? "border-[#2563EB] text-[#2563EB]"
-                  : "border-transparent text-[#64748B] hover:text-[#1E293B]"
+                  : "border-transparent text-[#64748B] hover:text-[#0F172A]"
               }`}
             >
               <Users className="w-3.5 h-3.5 stroke-[2]" />
@@ -627,7 +627,7 @@ export default function PixelPerfectChatRoom() {
                     /* Current User Message (Aligned Right with Teal Bubble) */
                     <div key={msg.id} className="flex flex-col items-end gap-1 ml-auto max-w-lg">
                       <div className="flex items-center gap-2 px-1">
-                        <span className="text-[11px] font-bold text-[#1E293B]">
+                        <span className="text-[11px] font-bold text-[#0F172A]">
                           {msg.senderName}
                         </span>
                         <span className="text-[10px] text-[#94A3B8]">
@@ -667,7 +667,7 @@ export default function PixelPerfectChatRoom() {
                         sizes="28px"
                         className="object-cover"
                       />
-                      <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-[#22C55E] ring-1 ring-white"></span>
+                      <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-[#10B981] ring-1 ring-white"></span>
                     </button>
 
                     <div className="flex flex-col items-start gap-1">
@@ -675,7 +675,7 @@ export default function PixelPerfectChatRoom() {
                         <button
                           type="button"
                           onClick={() => handleOpenProfile(msg.senderName)}
-                          className="text-[11px] font-bold text-[#1E293B] hover:text-[#2563EB] transition-colors cursor-pointer text-left"
+                          className="text-[11px] font-bold text-[#0F172A] hover:text-[#2563EB] transition-colors cursor-pointer text-left"
                         >
                           {msg.senderName}
                         </button>
@@ -684,7 +684,7 @@ export default function PixelPerfectChatRoom() {
                         </span>
                       </div>
 
-                      <div className="px-4 py-2.5 rounded-2xl rounded-tl-xs bg-[#F1F5F9] text-[#1E293B] text-xs sm:text-[13px] leading-relaxed shadow-2xs break-words">
+                      <div className="px-4 py-2.5 rounded-2xl rounded-tl-xs bg-[#F1F5F9] text-[#0F172A] text-xs sm:text-[13px] leading-relaxed shadow-2xs break-words">
                         {msg.text}
                       </div>
                     </div>
@@ -713,7 +713,7 @@ export default function PixelPerfectChatRoom() {
           ) : (
             /* Members Tab View (Mobile / Inline) */
             <div className="flex-1 overflow-y-auto p-4 space-y-2">
-              <h3 className="text-xs font-bold text-[#1E293B] mb-2">
+              <h3 className="text-xs font-bold text-[#0F172A] mb-2">
                 Online Members ({ONLINE_MEMBERS.length})
               </h3>
               {ONLINE_MEMBERS.map((mem) => (
@@ -731,9 +731,9 @@ export default function PixelPerfectChatRoom() {
                       sizes="32px"
                       className="object-cover"
                     />
-                    <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-[#22C55E] ring-1 ring-white"></span>
+                    <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-[#10B981] ring-1 ring-white"></span>
                   </div>
-                  <span className="text-xs font-semibold text-[#1E293B]">
+                  <span className="text-xs font-semibold text-[#0F172A]">
                     {mem.name}
                   </span>
                 </button>
@@ -804,13 +804,13 @@ export default function PixelPerfectChatRoom() {
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   placeholder="Type a message..."
-                  className="bg-transparent text-xs sm:text-sm text-[#1E293B] placeholder:text-[#94A3B8] outline-none flex-1 py-0.5"
+                  className="bg-transparent text-xs sm:text-sm text-[#0F172A] placeholder:text-[#94A3B8] outline-none flex-1 py-0.5"
                 />
 
                 <button
                   type="button"
                   onClick={() => setShowEmojiMenu(!showEmojiMenu)}
-                  className="p-1 text-[#64748B] hover:text-[#1E293B] transition-colors"
+                  className="p-1 text-[#64748B] hover:text-[#0F172A] transition-colors"
                   title="Emoji"
                 >
                   <Smile className="w-4 h-4" />
@@ -818,7 +818,7 @@ export default function PixelPerfectChatRoom() {
 
                 <button
                   type="button"
-                  className="p-1 text-[#64748B] hover:text-[#1E293B] transition-colors"
+                  className="p-1 text-[#64748B] hover:text-[#0F172A] transition-colors"
                   title="Send Image"
                 >
                   <ImageIcon className="w-4 h-4" />
@@ -849,14 +849,14 @@ export default function PixelPerfectChatRoom() {
           <div className="bg-white rounded-2xl border border-[#E2E8F0] p-4 shadow-2xs space-y-3 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4 text-[#1E293B] stroke-[2.2]" />
-                <h3 className="text-[13px] font-bold text-[#1E293B]">
+                <Heart className="w-4 h-4 text-[#0F172A] stroke-[2.2]" />
+                <h3 className="text-[13px] font-bold text-[#0F172A]">
                   About This Room
                 </h3>
               </div>
               <button
                 onClick={() => setMobileInfoOpen(false)}
-                className="p-1 text-[#64748B] hover:text-[#1E293B] lg:hidden"
+                className="p-1 text-[#64748B] hover:text-[#0F172A] lg:hidden"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -868,13 +868,13 @@ export default function PixelPerfectChatRoom() {
 
             {/* Tags */}
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="px-2.5 py-0.5 rounded-lg bg-[#EDF3F8] text-[#1E293B] text-[10.5px] font-semibold">
+              <span className="px-2.5 py-0.5 rounded-lg bg-[#EDF3F8] text-[#0F172A] text-[10.5px] font-semibold">
                 #Love
               </span>
-              <span className="px-2.5 py-0.5 rounded-lg bg-[#EDF3F8] text-[#1E293B] text-[10.5px] font-semibold">
+              <span className="px-2.5 py-0.5 rounded-lg bg-[#EDF3F8] text-[#0F172A] text-[10.5px] font-semibold">
                 #Relationship
               </span>
-              <span className="px-2.5 py-0.5 rounded-lg bg-[#EDF3F8] text-[#1E293B] text-[10.5px] font-semibold">
+              <span className="px-2.5 py-0.5 rounded-lg bg-[#EDF3F8] text-[#0F172A] text-[10.5px] font-semibold">
                 #Chat
               </span>
             </div>
@@ -886,7 +886,7 @@ export default function PixelPerfectChatRoom() {
                 <span>28,460 Members</span>
               </div>
               <div className="flex items-center gap-2 text-[11px] text-[#334155] font-medium">
-                <span className="w-2 h-2 rounded-full bg-[#22C55E]"></span>
+                <span className="w-2 h-2 rounded-full bg-[#10B981]"></span>
                 <span>1,248 Online</span>
               </div>
             </div>
@@ -906,14 +906,14 @@ export default function PixelPerfectChatRoom() {
           <div className="flex-1 min-h-0 bg-white rounded-2xl border border-[#E2E8F0] p-4 shadow-2xs flex flex-col overflow-hidden">
             <div className="flex items-center justify-between pb-2 flex-shrink-0">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#22C55E]"></span>
-                <h3 className="text-[12.5px] font-bold text-[#1E293B]">
+                <span className="w-2 h-2 rounded-full bg-[#10B981]"></span>
+                <h3 className="text-[12.5px] font-bold text-[#0F172A]">
                   Online Members (1,248)
                 </h3>
               </div>
               <button
                 type="button"
-                className="p-1 text-[#64748B] hover:text-[#1E293B] transition-colors"
+                className="p-1 text-[#64748B] hover:text-[#0F172A] transition-colors"
                 title="Search member"
               >
                 <Search className="w-3.5 h-3.5" />
@@ -970,7 +970,7 @@ export default function PixelPerfectChatRoom() {
             {/* View All Members Button */}
             <button
               type="button"
-              className="w-full py-2 px-3 rounded-xl border border-[#E2E8F0] hover:bg-slate-50 text-[#1E293B] text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors mt-auto flex-shrink-0 cursor-pointer"
+              className="w-full py-2 px-3 rounded-xl border border-[#E2E8F0] hover:bg-slate-50 text-[#0F172A] text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors mt-auto flex-shrink-0 cursor-pointer"
             >
               <span>View All Members</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -981,7 +981,7 @@ export default function PixelPerfectChatRoom() {
 
       {/* Copy Link Toast */}
       {copiedToast && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#1E293B] text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-lg animate-in fade-in slide-in-from-bottom-2">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#0F172A] text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-lg animate-in fade-in slide-in-from-bottom-2">
           Room link copied to clipboard!
         </div>
       )}

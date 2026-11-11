@@ -48,11 +48,11 @@ export default function ForgotPasswordPage() {
                 priority
               />
             </div>
-            <span className="text-xl font-bold tracking-tight text-[#1E293B]">
+            <span className="text-xl font-bold tracking-tight text-[#0F172A]">
               ChatVerse
             </span>
           </Link>
-          <h1 className="text-2xl font-extrabold text-[#1E293B] tracking-tight">
+          <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight">
             Forgot Password
           </h1>
           <p className="text-xs text-[#64748B] mt-1">
@@ -74,7 +74,7 @@ export default function ForgotPasswordPage() {
                 <CheckCircle2 className="w-4 h-4" />
                 <span>Reset Link Ready</span>
               </div>
-              <p className="text-xs text-[#1E293B] leading-relaxed">
+              <p className="text-xs text-[#0F172A] leading-relaxed">
                 {successMsg}
               </p>
             </div>
@@ -89,7 +89,7 @@ export default function ForgotPasswordPage() {
 
             <Link
               href="/login"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#1E293B] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Sign In</span>
@@ -98,7 +98,7 @@ export default function ForgotPasswordPage() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-[#1E293B] mb-1.5">
+              <label className="block text-xs font-semibold text-[#0F172A] mb-1.5">
                 Registered Email
               </label>
               <div className="relative">
@@ -108,7 +108,7 @@ export default function ForgotPasswordPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="e.g. alex@example.com"
                   required
-                  className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all"
+                  className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all"
                 />
               </div>
             </div>
@@ -125,7 +125,7 @@ export default function ForgotPasswordPage() {
             <div className="text-center pt-2">
               <Link
                 href="/login"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#1E293B] transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Return to Sign In</span>

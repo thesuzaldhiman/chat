@@ -101,6 +101,16 @@ function MessagesContent() {
     setShowEmojiMenu(false);
   };
 
+  const handleSendReaction = (emoji: string) => {
+    if (!activeConversation) return;
+    sendMessage(activeConversation.otherUser, emoji);
+  };
+
+  const handleWave = () => {
+    if (!activeConversation) return;
+    sendMessage(activeConversation.otherUser, "👋 Hey! How are you doing?");
+  };
+
   // Filtered conversations
   const filteredConversations = conversations.filter((c) => {
     if (!searchQuery.trim()) return true;
@@ -119,7 +129,7 @@ function MessagesContent() {
           <div className="w-12 h-12 rounded-full bg-[#EFF6FF] text-[#2563EB] flex items-center justify-center mx-auto mb-4">
             <MessageSquare className="w-6 h-6" />
           </div>
-          <h2 className="text-xl font-bold text-[#1E293B] mb-2">
+          <h2 className="text-xl font-bold text-[#0F172A] mb-2">
             Sign In for Private Messaging
           </h2>
           <p className="text-xs text-[#64748B] mb-6">
@@ -128,7 +138,7 @@ function MessagesContent() {
           <div className="flex gap-3 justify-center">
             <button
               onClick={() => openAuthModal("login")}
-              className="px-5 py-2 text-xs font-semibold text-[#1E293B] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
+              className="px-5 py-2 text-xs font-semibold text-[#0F172A] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
             >
               Log In
             </button>
@@ -159,7 +169,7 @@ function MessagesContent() {
             {/* Header: Title + New Chat */}
             <div className="p-4 border-b border-[#E2E8F0] flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold text-[#1E293B]">Messages</h2>
+                <h2 className="text-base font-bold text-[#0F172A]">Messages</h2>
                 {totalUnreadCount > 0 && (
                   <span className="px-2 py-0.5 rounded-full bg-[#2563EB] text-white text-[10px] font-bold">
                     {totalUnreadCount} new
@@ -169,7 +179,7 @@ function MessagesContent() {
               <button
                 type="button"
                 onClick={() => setShowNewChatModal(true)}
-                className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#d8ece8] rounded-xl transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#DBEAFE] rounded-xl transition-colors cursor-pointer"
                 title="Start New Chat"
               >
                 <Plus className="w-3.5 h-3.5" />
@@ -186,7 +196,7 @@ function MessagesContent() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search conversations..."
-                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
                 />
               </div>
             </div>
@@ -226,14 +236,14 @@ function MessagesContent() {
                           )}
                         </div>
                         {c.otherUser.isOnline && (
-                          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#22C55E] border-2 border-white" />
+                          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#10B981] border-2 border-white ring-1 ring-[#10B981]/20 animate-pulse" />
                         )}
                       </div>
 
                       {/* Info & Snippet */}
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between mb-0.5">
-                          <p className="text-xs font-bold text-[#1E293B] truncate">
+                          <p className="text-xs font-bold text-[#0F172A] truncate">
                             {c.otherUser.name}
                           </p>
                           <span className="text-[10px] text-slate-400 flex-shrink-0">
@@ -243,7 +253,7 @@ function MessagesContent() {
                         <p
                           className={`text-xs truncate ${
                             c.unreadCount > 0
-                              ? "font-bold text-[#1E293B]"
+                              ? "font-bold text-[#0F172A]"
                               : "text-[#64748B]"
                           }`}
                         >
@@ -284,7 +294,7 @@ function MessagesContent() {
                     <button
                       type="button"
                       onClick={() => setActiveConvId(null)}
-                      className="p-1 rounded-lg text-slate-500 hover:text-[#1E293B] md:hidden"
+                      className="p-1 rounded-lg text-slate-500 hover:text-[#0F172A] md:hidden cursor-pointer"
                       aria-label="Back to conversations list"
                     >
                       <ArrowLeft className="w-5 h-5" />
@@ -311,14 +321,14 @@ function MessagesContent() {
                         )}
                       </div>
                       {activeConversation.otherUser.isOnline && (
-                        <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#22C55E] border-2 border-white" />
+                        <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#10B981] border-2 border-white ring-1 ring-[#10B981]/20 animate-pulse" />
                       )}
                     </Link>
 
                     <div className="min-w-0">
                       <Link
                         href={`/profile/${activeConversation.otherUser.username}`}
-                        className="text-xs sm:text-sm font-bold text-[#1E293B] hover:text-[#2563EB] transition-colors truncate block"
+                        className="text-xs sm:text-sm font-bold text-[#0F172A] hover:text-[#2563EB] transition-colors truncate block"
                       >
                         {activeConversation.otherUser.name}
                       </Link>
@@ -326,7 +336,7 @@ function MessagesContent() {
                         <span
                           className={`w-1.5 h-1.5 rounded-full ${
                             activeConversation.otherUser.isOnline
-                              ? "bg-[#22C55E]"
+                              ? "bg-[#10B981] animate-pulse"
                               : "bg-slate-300"
                           }`}
                         />
@@ -365,7 +375,7 @@ function MessagesContent() {
 
                     <Link
                       href={`/profile/${activeConversation.otherUser.username}`}
-                      className="p-1.5 rounded-xl border border-[#E2E8F0] hover:bg-slate-50 text-[#64748B] hover:text-[#1E293B] transition-colors cursor-pointer"
+                      className="p-1.5 rounded-xl border border-[#E2E8F0] hover:bg-slate-50 text-[#64748B] hover:text-[#0F172A] transition-colors cursor-pointer"
                       title="View Profile"
                     >
                       <ExternalLink className="w-4 h-4" />
@@ -387,7 +397,7 @@ function MessagesContent() {
                   {/* Date Badge */}
                   <div className="flex justify-center my-2">
                     <span className="px-3 py-0.5 rounded-full bg-slate-200/60 text-[#64748B] text-[10px] font-semibold">
-                      End-to-End Encrypted Conversation
+                      🔒 End-to-End Encrypted Conversation
                     </span>
                   </div>
 
@@ -398,24 +408,24 @@ function MessagesContent() {
                         key={m.id}
                         className={`flex flex-col ${
                           isOwn ? "items-end" : "items-start"
-                        }`}
+                        } animate-in fade-in duration-150`}
                       >
                         <div
                           className={`max-w-[78%] px-4 py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-2xs break-words ${
                             isOwn
-                              ? "bg-[#2563EB] text-white rounded-tr-xs"
-                              : "bg-white text-[#1E293B] border border-[#E2E8F0] rounded-tl-xs"
+                              ? "bg-[#2563EB] text-white rounded-tr-xs shadow-sm shadow-[#2563EB]/15"
+                              : "bg-white text-[#0F172A] border border-[#E2E8F0] rounded-tl-xs"
                           }`}
                         >
                           {m.text}
                         </div>
 
-                        <div className="flex items-center gap-1 mt-1 px-1 text-[10px] text-slate-400">
+                        <div className="flex items-center gap-1 mt-1 px-1 text-[10px] text-slate-400 font-medium">
                           <span>{m.timestamp}</span>
                           {isOwn && (
-                            <span className="text-teal-600 ml-0.5">
+                            <span className="text-[#2563EB] ml-0.5">
                               {m.status === "read" ? (
-                                <CheckCheck className="w-3.5 h-3.5 text-teal-600 stroke-[2.2]" />
+                                <CheckCheck className="w-3.5 h-3.5 text-[#2563EB] stroke-[2.2]" />
                               ) : (
                                 <Check className="w-3.5 h-3.5 stroke-[2]" />
                               )}
@@ -426,6 +436,32 @@ function MessagesContent() {
                     );
                   })}
                   <div ref={messagesEndRef} />
+                </div>
+
+                {/* Floating Quick Reaction Dock */}
+                <div className="px-3.5 py-1.5 bg-white/95 backdrop-blur-md border-t border-[#E2E8F0] flex items-center justify-between gap-2 z-10 shrink-0">
+                  <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                    <span className="text-[11px] font-bold text-[#64748B] mr-1 hidden sm:inline">React:</span>
+                    {["❤️", "🔥", "😂", "✨", "🍿", "☕", "🎮", "👏"].map((emoji) => (
+                      <button
+                        key={emoji}
+                        type="button"
+                        onClick={() => handleSendReaction(emoji)}
+                        className="w-7 h-7 flex items-center justify-center text-sm rounded-lg hover:bg-[#EFF6FF] hover:scale-125 transition-all cursor-pointer active:scale-95"
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleWave}
+                    className="text-[11px] font-bold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#DBEAFE] px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shadow-2xs active:scale-95 shrink-0"
+                    title="Send wave"
+                  >
+                    <span>Wave 👋</span>
+                  </button>
                 </div>
 
                 {/* Composer */}
@@ -461,7 +497,7 @@ function MessagesContent() {
                       value={inputText}
                       onChange={(e) => setInputText(e.target.value)}
                       placeholder={`Message ${activeConversation.otherUser.name}...`}
-                      className="flex-1 px-4 py-2.5 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+                      className="flex-1 px-4 py-2.5 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
                     />
 
                     <button
@@ -481,7 +517,7 @@ function MessagesContent() {
                 <div className="w-14 h-14 rounded-2xl bg-[#EFF6FF] text-[#2563EB] flex items-center justify-center mb-4">
                   <MessageSquare className="w-7 h-7" />
                 </div>
-                <h3 className="text-base font-bold text-[#1E293B] mb-1">
+                <h3 className="text-base font-bold text-[#0F172A] mb-1">
                   Select a Conversation
                 </h3>
                 <p className="text-xs text-[#64748B] max-w-sm mb-6">
@@ -508,13 +544,13 @@ function MessagesContent() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-in fade-in duration-150">
           <div className="w-full max-w-md bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl p-6 animate-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
-              <h3 className="text-sm font-bold text-[#1E293B]">
+              <h3 className="text-sm font-bold text-[#0F172A]">
                 Start a New Conversation
               </h3>
               <button
                 type="button"
                 onClick={() => setShowNewChatModal(false)}
-                className="p-1 text-slate-400 hover:text-[#1E293B]"
+                className="p-1 text-slate-400 hover:text-[#0F172A] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -546,7 +582,7 @@ function MessagesContent() {
                         )}
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-[#1E293B]">{f.name}</p>
+                        <p className="text-xs font-bold text-[#0F172A]">{f.name}</p>
                         <p className="text-[10px] text-[#64748B]">@{f.username}</p>
                       </div>
                     </div>

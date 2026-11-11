@@ -3,13 +3,13 @@
 :root {
   --background: #F8FAFC;
   --card-bg: #FFFFFF;
-  --text-primary: #1E293B;
+  --text-primary: #0F172A;
   --text-secondary: #64748B;
   --accent-primary: #2563EB;
   --accent-primary-hover: #1D4ED8;
   --accent-light: #EFF6FF;
   --border-color: #E2E8F0;
-  --online-status: #22C55E;
+  --online-status: #10B981;
 }
 
 @theme inline {

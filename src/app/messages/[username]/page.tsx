@@ -57,7 +57,7 @@ export default function DirectMessagePage() {
           <div className="w-12 h-12 rounded-full bg-[#EFF6FF] text-[#2563EB] flex items-center justify-center mx-auto mb-4">
             <MessageSquare className="w-6 h-6" />
           </div>
-          <h2 className="text-xl font-bold text-[#1E293B] mb-2">
+          <h2 className="text-xl font-bold text-[#0F172A] mb-2">
             Sign In for Private Messaging
           </h2>
           <p className="text-xs text-[#64748B] mb-6">
@@ -66,7 +66,7 @@ export default function DirectMessagePage() {
           <div className="flex gap-3 justify-center">
             <button
               onClick={() => openAuthModal("login")}
-              className="px-5 py-2 text-xs font-semibold text-[#1E293B] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
+              className="px-5 py-2 text-xs font-semibold text-[#0F172A] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
             >
               Log In
             </button>
@@ -86,7 +86,7 @@ export default function DirectMessagePage() {
     return (
       <div className="min-h-[calc(100vh-58px)] flex items-center justify-center py-20 px-4 bg-[#F8FAFC]">
         <div className="max-w-md w-full bg-white rounded-2xl border border-[#E2E8F0] p-8 text-center shadow-xs">
-          <h2 className="text-lg font-bold text-[#1E293B] mb-2">Member Not Found</h2>
+          <h2 className="text-lg font-bold text-[#0F172A] mb-2">Member Not Found</h2>
           <p className="text-xs text-[#64748B] mb-6">
             Could not find user @{username} to start a conversation with.
           </p>
@@ -131,11 +131,11 @@ export default function DirectMessagePage() {
             <span>{targetUser.avatar || targetUser.name[0]}</span>
           )}
           {targetUser.isOnline && (
-            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-[#22C55E] border-2 border-white" />
+            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-[#10B981] border-2 border-white ring-1 ring-[#10B981]/20 animate-pulse" />
           )}
         </div>
 
-        <h2 className="text-lg font-bold text-[#1E293B]">
+        <h2 className="text-lg font-bold text-[#0F172A]">
           {targetUser.name}
         </h2>
         <p className="text-xs text-[#64748B] mb-4">
@@ -144,7 +144,7 @@ export default function DirectMessagePage() {
 
         {/* Restriction Alert */}
         <div className="p-4 bg-[#F8FAFC] rounded-xl border border-[#E2E8F0] text-xs text-[#475569] leading-relaxed mb-6">
-          <p className="font-semibold text-[#1E293B] mb-1">
+          <p className="font-semibold text-[#0F172A] mb-1">
             Friend Request Required
           </p>
           <p>
@@ -173,13 +173,13 @@ export default function DirectMessagePage() {
           <div className="flex items-center gap-2 pt-2">
             <Link
               href={`/profile/${targetUser.username}`}
-              className="flex-1 py-2 px-3 text-xs font-semibold text-[#64748B] hover:text-[#1E293B] bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors"
+              className="flex-1 py-2 px-3 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors"
             >
               View Profile
             </Link>
             <Link
               href="/messages"
-              className="flex-1 py-2 px-3 text-xs font-semibold text-[#64748B] hover:text-[#1E293B] bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors"
+              className="flex-1 py-2 px-3 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors"
             >
               Inbox
             </Link>

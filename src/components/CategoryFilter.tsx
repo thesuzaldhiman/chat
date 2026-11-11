@@ -24,7 +24,7 @@ export default function CategoryFilter({
               className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all duration-150 cursor-pointer ${
                 isSelected
                   ? "bg-[#2563EB] text-white shadow-2xs"
-                  : "bg-white text-[#64748B] border border-[#E2E8F0] hover:text-[#1E293B] hover:border-slate-300"
+                  : "bg-white text-[#64748B] border border-[#E2E8F0] hover:text-[#0F172A] hover:border-slate-300"
               }`}
             >
               {category}

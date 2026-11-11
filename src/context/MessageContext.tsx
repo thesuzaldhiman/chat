@@ -110,7 +110,7 @@ export function MessageProvider({ children }: { children: React.ReactNode }) {
               conversationId: convSophiaId,
               senderId: currentUserId,
               receiverId: sophia.id,
-              text: "The muted teal looks very premium and easy on the eyes.",
+              text: "The royal azure theme looks very premium and modern.",
               timestamp: "Yesterday",
               createdAt: Date.now() - 80000000,
               status: "read",

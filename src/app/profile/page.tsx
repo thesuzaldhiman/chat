@@ -139,7 +139,7 @@ function MyProfileContent() {
           <div className="w-12 h-12 rounded-full bg-[#EFF6FF] text-[#2563EB] flex items-center justify-center mx-auto mb-4">
             <UserIcon className="w-6 h-6" />
           </div>
-          <h2 className="text-xl font-bold text-[#1E293B] mb-2">
+          <h2 className="text-xl font-bold text-[#0F172A] mb-2">
             Sign In to View Your Profile
           </h2>
           <p className="text-xs text-[#64748B] mb-6">
@@ -148,7 +148,7 @@ function MyProfileContent() {
           <div className="flex gap-3 justify-center">
             <Link
               href="/login"
-              className="px-5 py-2 text-xs font-semibold text-[#1E293B] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+              className="px-5 py-2 text-xs font-semibold text-[#0F172A] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
             >
               Log In
             </Link>
@@ -175,7 +175,7 @@ function MyProfileContent() {
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-sm font-bold text-[#1E293B]">
+                <p className="text-sm font-bold text-[#0F172A]">
                   You are currently using a Temporary Guest Profile ({user.name})
                 </p>
                 <p className="text-xs text-[#64748B]">
@@ -197,7 +197,7 @@ function MyProfileContent() {
         {/* Main Card */}
         <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-xs overflow-hidden">
           {/* Header Banner */}
-          <div className="h-36 sm:h-44 bg-gradient-to-r from-teal-600 via-[#2563EB] to-emerald-700 relative">
+          <div className="h-36 sm:h-44 bg-gradient-to-r from-[#1D4ED8] via-[#2563EB] to-[#3B82F6] relative">
             <div className="absolute inset-0 bg-black/10" />
           </div>
 
@@ -222,21 +222,21 @@ function MyProfileContent() {
                     )}
                   </div>
                   <span
-                    className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-[#22C55E] border-2 border-white"
+                    className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-[#10B981] border-2 border-white ring-1 ring-[#10B981]/20 animate-pulse"
                     title="Online"
                   />
                 </div>
 
                 <div className="mb-2">
                   <div className="flex items-center gap-2">
-                    <h1 className="text-xl sm:text-2xl font-bold text-[#1E293B] tracking-tight">
+                    <h1 className="text-xl sm:text-2xl font-bold text-[#0F172A] tracking-tight">
                       {user.name}
                     </h1>
                     <span
                       className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg flex items-center gap-1 ${
                         user.isGuest
                           ? "bg-slate-100 text-slate-600 border border-slate-200"
-                          : "bg-[#EFF6FF] text-[#2563EB] border border-[#d0ece8]"
+                          : "bg-[#EFF6FF] text-[#2563EB] border border-[#EFF6FF]"
                       }`}
                     >
                       {user.role === "Moderator" && <Shield className="w-3 h-3" />}
@@ -264,7 +264,7 @@ function MyProfileContent() {
                   <button
                     type="button"
                     onClick={() => setActiveTab("overview")}
-                    className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-[#1E293B] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-[#0F172A] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
                   >
                     <span>View Overview</span>
                   </button>
@@ -272,7 +272,7 @@ function MyProfileContent() {
                 {user.username && !user.isGuest && (
                   <Link
                     href={`/profile/${user.username}`}
-                    className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#d9ece8] rounded-xl transition-colors"
+                    className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#DBEAFE] rounded-xl transition-colors"
                   >
                     <span>Public View</span>
                   </Link>
@@ -288,7 +288,7 @@ function MyProfileContent() {
                 className={`pb-3 px-3 text-xs font-semibold transition-all border-b-2 cursor-pointer ${
                   activeTab === "overview"
                     ? "border-[#2563EB] text-[#2563EB]"
-                    : "border-transparent text-[#64748B] hover:text-[#1E293B]"
+                    : "border-transparent text-[#64748B] hover:text-[#0F172A]"
                 }`}
               >
                 Overview
@@ -299,7 +299,7 @@ function MyProfileContent() {
                 className={`pb-3 px-3 text-xs font-semibold transition-all border-b-2 cursor-pointer ${
                   activeTab === "edit"
                     ? "border-[#2563EB] text-[#2563EB]"
-                    : "border-transparent text-[#64748B] hover:text-[#1E293B]"
+                    : "border-transparent text-[#64748B] hover:text-[#0F172A]"
                 }`}
               >
                 Edit Details
@@ -310,7 +310,7 @@ function MyProfileContent() {
                 className={`pb-3 px-3 text-xs font-semibold transition-all border-b-2 cursor-pointer ${
                   activeTab === "rooms"
                     ? "border-[#2563EB] text-[#2563EB]"
-                    : "border-transparent text-[#64748B] hover:text-[#1E293B]"
+                    : "border-transparent text-[#64748B] hover:text-[#0F172A]"
                 }`}
               >
                 My Chat Rooms
@@ -322,7 +322,7 @@ function MyProfileContent() {
                   className={`pb-3 px-3 text-xs font-semibold transition-all border-b-2 cursor-pointer ${
                     activeTab === "security"
                       ? "border-[#2563EB] text-[#2563EB]"
-                      : "border-transparent text-[#64748B] hover:text-[#1E293B]"
+                      : "border-transparent text-[#64748B] hover:text-[#0F172A]"
                   }`}
                 >
                   Account &amp; Security
@@ -352,11 +352,11 @@ function MyProfileContent() {
                 {/* Stats Bar */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <div className="p-3.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-center">
-                    <p className="text-lg font-bold text-[#1E293B]">{user.friendsCount || 0}</p>
+                    <p className="text-lg font-bold text-[#0F172A]">{user.friendsCount || 0}</p>
                     <p className="text-[11px] text-[#64748B]">Friends</p>
                   </div>
                   <div className="p-3.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-center">
-                    <p className="text-lg font-bold text-[#1E293B]">4</p>
+                    <p className="text-lg font-bold text-[#0F172A]">4</p>
                     <p className="text-[11px] text-[#64748B]">Active Rooms</p>
                   </div>
                   <div className="p-3.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-center">
@@ -364,14 +364,14 @@ function MyProfileContent() {
                     <p className="text-[11px] text-[#64748B]">Community Status</p>
                   </div>
                   <div className="p-3.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-center">
-                    <p className="text-lg font-bold text-[#1E293B]">100%</p>
+                    <p className="text-lg font-bold text-[#0F172A]">100%</p>
                     <p className="text-[11px] text-[#64748B]">Reputation Score</p>
                   </div>
                 </div>
 
                 {/* About & Bio */}
                 <div>
-                  <h3 className="text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-2">
+                  <h3 className="text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-2">
                     About Me
                   </h3>
                   <div className="p-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-xs sm:text-sm text-[#334155] leading-relaxed">
@@ -385,7 +385,7 @@ function MyProfileContent() {
                     <MapPin className="w-4 h-4 text-[#2563EB]" />
                     <div>
                       <p className="text-[10px] text-[#64748B]">Location</p>
-                      <p className="text-xs font-semibold text-[#1E293B]">
+                      <p className="text-xs font-semibold text-[#0F172A]">
                         {user.location || "Not specified"}
                       </p>
                     </div>
@@ -395,7 +395,7 @@ function MyProfileContent() {
                     <Calendar className="w-4 h-4 text-[#2563EB]" />
                     <div>
                       <p className="text-[10px] text-[#64748B]">Member Since</p>
-                      <p className="text-xs font-semibold text-[#1E293B]">
+                      <p className="text-xs font-semibold text-[#0F172A]">
                         {user.joinedAt || "Recent"}
                       </p>
                     </div>
@@ -405,7 +405,7 @@ function MyProfileContent() {
                     <Globe className="w-4 h-4 text-[#2563EB]" />
                     <div>
                       <p className="text-[10px] text-[#64748B]">Website / Link</p>
-                      <p className="text-xs font-semibold text-[#1E293B] truncate max-w-[140px]">
+                      <p className="text-xs font-semibold text-[#0F172A] truncate max-w-[140px]">
                         {user.website || "None"}
                       </p>
                     </div>
@@ -415,14 +415,14 @@ function MyProfileContent() {
                 {/* Interests */}
                 {user.interests && user.interests.length > 0 && (
                   <div>
-                    <h3 className="text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-2">
+                    <h3 className="text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-2">
                       Interests &amp; Topics
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {user.interests.map((interest) => (
                         <span
                           key={interest}
-                          className="px-3 py-1 bg-[#EFF6FF] text-[#2563EB] border border-[#d2ece7] rounded-xl text-xs font-semibold"
+                          className="px-3 py-1 bg-[#EFF6FF] text-[#2563EB] border border-[#EFF6FF] rounded-xl text-xs font-semibold"
                         >
                           #{interest}
                         </span>
@@ -438,7 +438,7 @@ function MyProfileContent() {
               <form onSubmit={handleSaveProfile} className="mt-6 space-y-5">
                 {/* Avatar Preset Selector */}
                 <div>
-                  <label className="block text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-2">
                     Choose Profile Avatar
                   </label>
                   <div className="grid grid-cols-4 sm:grid-cols-7 gap-2.5">
@@ -474,7 +474,7 @@ function MyProfileContent() {
                 {/* Basic inputs */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-[#1E293B] mb-1.5">
+                    <label className="block text-xs font-semibold text-[#0F172A] mb-1.5">
                       Display Name
                     </label>
                     <input
@@ -483,13 +483,13 @@ function MyProfileContent() {
                       onChange={(e) => setName(e.target.value)}
                       required
                       placeholder="e.g. Alex Morgan"
-                      className="w-full px-3.5 py-2 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+                      className="w-full px-3.5 py-2 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
                     />
                   </div>
 
                   {!user.isGuest && (
                     <div>
-                      <label className="block text-xs font-semibold text-[#1E293B] mb-1.5">
+                      <label className="block text-xs font-semibold text-[#0F172A] mb-1.5">
                         Username (Unique Handle)
                       </label>
                       <div className="relative">
@@ -500,7 +500,7 @@ function MyProfileContent() {
                           onChange={(e) => setUsername(e.target.value)}
                           required
                           placeholder="alex_99"
-                          className="w-full pl-8 pr-3.5 py-2 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+                          className="w-full pl-8 pr-3.5 py-2 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
                         />
                       </div>
                     </div>
@@ -509,7 +509,7 @@ function MyProfileContent() {
 
                 {/* Bio */}
                 <div>
-                  <label className="block text-xs font-semibold text-[#1E293B] mb-1.5">
+                  <label className="block text-xs font-semibold text-[#0F172A] mb-1.5">
                     Bio &amp; Status Message
                   </label>
                   <textarea
@@ -517,14 +517,14 @@ function MyProfileContent() {
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                     placeholder="Tell other community members what you love talking about..."
-                    className="w-full px-3.5 py-2 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+                    className="w-full px-3.5 py-2 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
                   />
                 </div>
 
                 {/* Location & Website */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-[#1E293B] mb-1.5">
+                    <label className="block text-xs font-semibold text-[#0F172A] mb-1.5">
                       Location
                     </label>
                     <input
@@ -532,12 +532,12 @@ function MyProfileContent() {
                       value={location}
                       onChange={(e) => setLocation(e.target.value)}
                       placeholder="e.g. New York, USA or Mumbai, India"
-                      className="w-full px-3.5 py-2 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+                      className="w-full px-3.5 py-2 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-[#1E293B] mb-1.5">
+                    <label className="block text-xs font-semibold text-[#0F172A] mb-1.5">
                       Website or Social Link
                     </label>
                     <input
@@ -545,7 +545,7 @@ function MyProfileContent() {
                       value={website}
                       onChange={(e) => setWebsite(e.target.value)}
                       placeholder="https://yourwebsite.com"
-                      className="w-full px-3.5 py-2 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+                      className="w-full px-3.5 py-2 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
                     />
                   </div>
                 </div>
@@ -553,7 +553,7 @@ function MyProfileContent() {
                 {/* Interests Tag Selector */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-xs font-bold text-[#1E293B] uppercase tracking-wider">
+                    <label className="text-xs font-bold text-[#0F172A] uppercase tracking-wider">
                       Interests &amp; Topics ({selectedInterests.length}/6)
                     </label>
                     <span className="text-[11px] text-[#64748B]">Click tags to toggle</span>
@@ -569,7 +569,7 @@ function MyProfileContent() {
                           className={`px-3 py-1 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
                             isSelected
                               ? "bg-[#2563EB] text-white shadow-xs"
-                              : "bg-white text-[#64748B] border border-[#E2E8F0] hover:text-[#1E293B]"
+                              : "bg-white text-[#64748B] border border-[#E2E8F0] hover:text-[#0F172A]"
                           }`}
                         >
                           {isSelected ? `✓ ${tag}` : `+ ${tag}`}
@@ -584,7 +584,7 @@ function MyProfileContent() {
                   <button
                     type="button"
                     onClick={() => setActiveTab("overview")}
-                    className="px-4 py-2 text-xs font-semibold text-[#64748B] hover:text-[#1E293B] transition-colors"
+                    className="px-4 py-2 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] transition-colors"
                   >
                     Cancel
                   </button>
@@ -603,7 +603,7 @@ function MyProfileContent() {
             {activeTab === "rooms" && (
               <div className="mt-6 space-y-4">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-xs font-bold text-[#1E293B] uppercase tracking-wider">
+                  <h3 className="text-xs font-bold text-[#0F172A] uppercase tracking-wider">
                     My Active Communities
                   </h3>
                   <Link
@@ -628,18 +628,18 @@ function MyProfileContent() {
                           {room.initials}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-xs font-bold text-[#1E293B] truncate">
+                          <p className="text-xs font-bold text-[#0F172A] truncate">
                             {room.name}
                           </p>
                           <p className="text-[11px] text-[#64748B] flex items-center gap-1.5 mt-0.5">
-                            <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+                            <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
                             <span>{room.onlineCount.toLocaleString()} online</span>
                           </p>
                         </div>
                       </div>
                       <Link
                         href={`/rooms/${room.slug}`}
-                        className="px-3 py-1.5 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#d5eee9] rounded-lg transition-colors flex-shrink-0"
+                        className="px-3 py-1.5 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#DBEAFE] rounded-lg transition-colors flex-shrink-0"
                       >
                         Enter
                       </Link>
@@ -653,12 +653,12 @@ function MyProfileContent() {
             {activeTab === "security" && !user.isGuest && (
               <div className="mt-6 space-y-6">
                 <div>
-                  <h3 className="text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-2">
+                  <h3 className="text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-2">
                     Change Password
                   </h3>
                   <form onSubmit={handlePasswordChange} className="max-w-md space-y-3.5 bg-[#F8FAFC] p-4 rounded-xl border border-[#E2E8F0]">
                     <div>
-                      <label className="block text-xs font-semibold text-[#1E293B] mb-1">
+                      <label className="block text-xs font-semibold text-[#0F172A] mb-1">
                         New Password
                       </label>
                       <input
@@ -668,11 +668,11 @@ function MyProfileContent() {
                         placeholder="••••••••"
                         required
                         minLength={6}
-                        className="w-full px-3 py-2 text-xs bg-white border border-[#E2E8F0] rounded-xl text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+                        className="w-full px-3 py-2 text-xs bg-white border border-[#E2E8F0] rounded-xl text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-[#1E293B] mb-1">
+                      <label className="block text-xs font-semibold text-[#0F172A] mb-1">
                         Confirm New Password
                       </label>
                       <input
@@ -682,7 +682,7 @@ function MyProfileContent() {
                         placeholder="••••••••"
                         required
                         minLength={6}
-                        className="w-full px-3 py-2 text-xs bg-white border border-[#E2E8F0] rounded-xl text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+                        className="w-full px-3 py-2 text-xs bg-white border border-[#E2E8F0] rounded-xl text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
                       />
                     </div>
                     <button

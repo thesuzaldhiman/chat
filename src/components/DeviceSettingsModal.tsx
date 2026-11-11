@@ -42,14 +42,14 @@ export default function DeviceSettingsModal({
         <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0] mb-4">
           <div className="flex items-center gap-2">
             <Settings className="w-4 h-4 text-[#2563EB]" />
-            <h3 className="text-sm font-bold text-[#1E293B]">
+            <h3 className="text-sm font-bold text-[#0F172A]">
               Audio &amp; Video Hardware Settings
             </h3>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-[#1E293B]"
+            className="p-1 text-slate-400 hover:text-[#0F172A]"
           >
             <X className="w-4 h-4" />
           </button>
@@ -78,7 +78,7 @@ export default function DeviceSettingsModal({
         {/* Video Preview if video mode */}
         {mode === "video" && (
           <div className="mb-4">
-            <label className="block text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-2">
               Camera Preview
             </label>
             <div className="relative w-full h-40 bg-slate-900 rounded-xl overflow-hidden flex items-center justify-center">
@@ -102,13 +102,13 @@ export default function DeviceSettingsModal({
 
         {/* Microphone selector */}
         <div className="mb-4">
-          <label className="block text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
             Microphone Device
           </label>
           <select
             value={media.selectedMicId}
             onChange={(e) => media.switchMic(e.target.value)}
-            className="w-full px-3 py-2 text-xs bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
+            className="w-full px-3 py-2 text-xs bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
           >
             {media.availableMics.length > 0 ? (
               media.availableMics.map((mic, idx) => (
@@ -142,13 +142,13 @@ export default function DeviceSettingsModal({
         {/* Camera selector if in video mode */}
         {mode === "video" && (
           <div className="mb-5">
-            <label className="block text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-1.5">
               Camera Device
             </label>
             <select
               value={media.selectedCameraId}
               onChange={(e) => media.switchCamera(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
+              className="w-full px-3 py-2 text-xs bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
             >
               {media.availableCameras.length > 0 ? (
                 media.availableCameras.map((cam, idx) => (

@@ -19,7 +19,7 @@ export default function ToastContainer() {
         return (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-start gap-3 p-3.5 rounded-2xl border shadow-xl bg-white text-[#1E293B] animate-in slide-in-from-bottom-3 duration-200 ${
+            className={`pointer-events-auto flex items-start gap-3 p-3.5 rounded-2xl border shadow-xl bg-white text-[#0F172A] animate-in slide-in-from-bottom-3 duration-200 ${
               isSuccess
                 ? "border-emerald-200 ring-1 ring-emerald-500/10"
                 : isError
@@ -38,7 +38,7 @@ export default function ToastContainer() {
 
             <div className="flex-1 min-w-0">
               {toast.title && (
-                <p className="text-xs font-bold text-[#1E293B] mb-0.5">
+                <p className="text-xs font-bold text-[#0F172A] mb-0.5">
                   {toast.title}
                 </p>
               )}
@@ -50,7 +50,7 @@ export default function ToastContainer() {
             <button
               type="button"
               onClick={() => dismissToast(toast.id)}
-              className="p-1 text-slate-400 hover:text-[#1E293B] rounded-lg transition-colors cursor-pointer flex-shrink-0"
+              className="p-1 text-slate-400 hover:text-[#0F172A] rounded-lg transition-colors cursor-pointer flex-shrink-0"
             >
               <X className="w-3.5 h-3.5" />
             </button>

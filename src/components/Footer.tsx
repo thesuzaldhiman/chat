@@ -19,7 +19,7 @@ export default function Footer() {
                 className="object-contain"
               />
             </div>
-            <span className="text-base font-bold text-[#1E293B]">
+            <span className="text-base font-bold text-[#0F172A]">
               ChatVerse
             </span>
             <span className="text-xs text-[#64748B] pl-2 border-l border-[#E2E8F0]">

@@ -63,11 +63,11 @@ export default function LoginPage() {
                 priority
               />
             </div>
-            <span className="text-xl font-bold tracking-tight text-[#1E293B]">
+            <span className="text-xl font-bold tracking-tight text-[#0F172A]">
               ChatVerse
             </span>
           </Link>
-          <h1 className="text-2xl font-extrabold text-[#1E293B] tracking-tight">
+          <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight">
             Welcome Back
           </h1>
           <p className="text-xs text-[#64748B] mt-1">
@@ -86,7 +86,7 @@ export default function LoginPage() {
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-[#1E293B] mb-1.5">
+            <label className="block text-xs font-semibold text-[#0F172A] mb-1.5">
               Username or Email
             </label>
             <input
@@ -95,13 +95,13 @@ export default function LoginPage() {
               onChange={(e) => setIdentifier(e.target.value)}
               placeholder="e.g. alex@example.com or alex_morgan"
               required
-              className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all"
+              className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all"
             />
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-semibold text-[#1E293B]">
+              <label className="text-xs font-semibold text-[#0F172A]">
                 Password
               </label>
               <Link
@@ -118,12 +118,12 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#1E293B] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all pr-10"
+                className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#64748B] hover:text-[#1E293B]"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#64748B] hover:text-[#0F172A] cursor-pointer"
                 tabIndex={-1}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -169,7 +169,7 @@ export default function LoginPage() {
         <button
           type="button"
           onClick={handleGuestEntry}
-          className="w-full py-2.5 px-4 text-xs font-semibold text-[#1E293B] bg-[#F8FAFC] hover:bg-slate-100 border border-[#E2E8F0] rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full py-2.5 px-4 text-xs font-semibold text-[#0F172A] bg-[#F8FAFC] hover:bg-slate-100 border border-[#E2E8F0] rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
         >
           <UserCheck className="w-4 h-4 text-[#2563EB]" />
           <span>Continue as Guest</span>

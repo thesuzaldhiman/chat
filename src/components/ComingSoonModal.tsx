@@ -22,7 +22,7 @@ export default function ComingSoonModal() {
         <div className="flex justify-end">
           <button
             onClick={closeComingSoon}
-            className="p-1 rounded-lg text-[#64748B] hover:text-[#1E293B] hover:bg-slate-100 transition-colors"
+            className="p-1 rounded-lg text-[#64748B] hover:text-[#0F172A] hover:bg-slate-100 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -36,7 +36,7 @@ export default function ComingSoonModal() {
           Coming Soon
         </span>
 
-        <h3 className="text-lg font-bold text-[#1E293B] mb-2">{comingSoonFeature}</h3>
+        <h3 className="text-lg font-bold text-[#0F172A] mb-2">{comingSoonFeature}</h3>
         <p className="text-xs sm:text-sm text-[#64748B] mb-6 leading-relaxed max-w-sm mx-auto">
           This feature is scheduled in our phase-wise development roadmap. In the meantime, discover vibrant discussions in our live chat rooms!
         </p>
@@ -51,7 +51,7 @@ export default function ComingSoonModal() {
           </button>
           <button
             onClick={closeComingSoon}
-            className="w-full py-2 text-xs font-semibold text-[#64748B] hover:text-[#1E293B] transition-colors cursor-pointer"
+            className="w-full py-2 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] transition-colors cursor-pointer"
           >
             Close
           </button>

@@ -48,7 +48,7 @@ export default function UserProfileModal({ user, isOpen, onClose }: UserProfileM
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-in fade-in duration-150">
       <div className="w-full max-w-md bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150">
         {/* Banner with gradient */}
-        <div className={`relative h-24 bg-gradient-to-r ${user.bannerGradient || "from-teal-600 to-emerald-700"} p-4 flex items-start justify-end`}>
+        <div className={`relative h-24 bg-gradient-to-r ${user.bannerGradient || "from-[#1D4ED8] via-[#2563EB] to-[#3B82F6]"} p-4 flex items-start justify-end`}>
           <button
             onClick={onClose}
             className="w-7 h-7 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition-colors cursor-pointer"
@@ -78,7 +78,7 @@ export default function UserProfileModal({ user, isOpen, onClose }: UserProfileM
               </div>
               {user.isOnline && (
                 <span
-                  className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-[#22C55E] border-2 border-white"
+                  className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-[#10B981] border-2 border-white"
                   title="Online now"
                 />
               )}
@@ -101,7 +101,7 @@ export default function UserProfileModal({ user, isOpen, onClose }: UserProfileM
 
           {/* Name & Username */}
           <div className="mb-3">
-            <h3 className="text-lg font-bold text-[#1E293B] tracking-tight">
+            <h3 className="text-lg font-bold text-[#0F172A] tracking-tight">
               {user.name}
             </h3>
             <p className="text-xs text-[#64748B]">
@@ -133,19 +133,19 @@ export default function UserProfileModal({ user, isOpen, onClose }: UserProfileM
           {/* Social Stats Row */}
           <div className="grid grid-cols-3 gap-2 p-2.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl mb-4 text-center">
             <div>
-              <p className="text-xs font-bold text-[#1E293B]">
+              <p className="text-xs font-bold text-[#0F172A]">
                 {user.friendsCount + (status === "friends" ? 1 : 0)}
               </p>
               <p className="text-[10px] text-[#64748B]">Friends</p>
             </div>
             <div>
-              <p className="text-xs font-bold text-[#1E293B]">
+              <p className="text-xs font-bold text-[#0F172A]">
                 {user.mutualFriendsCount || 0}
               </p>
               <p className="text-[10px] text-[#64748B]">Mutual</p>
             </div>
             <div>
-              <p className="text-xs font-bold text-[#1E293B]">
+              <p className="text-xs font-bold text-[#0F172A]">
                 {user.roomsJoined ? user.roomsJoined.length : 1}
               </p>
               <p className="text-[10px] text-[#64748B]">Rooms</p>
@@ -176,7 +176,7 @@ export default function UserProfileModal({ user, isOpen, onClose }: UserProfileM
             <Link
               href={`/profile/${user.username}`}
               onClick={onClose}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[#475569] hover:text-[#1E293B] hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[#475569] hover:text-[#0F172A] hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               <span>Full Profile</span>
@@ -208,7 +208,7 @@ export default function UserProfileModal({ user, isOpen, onClose }: UserProfileM
                   <Link
                     href={`/messages?user=${user.username}`}
                     onClick={onClose}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#d8ece8] rounded-xl transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#DBEAFE] rounded-xl transition-colors cursor-pointer"
                   >
                     <MessageSquare className="w-3.5 h-3.5" />
                     <span>Message</span>

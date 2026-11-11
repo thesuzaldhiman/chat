@@ -140,7 +140,7 @@ export default function RandomVoicePage() {
               <Headphones className="w-7 h-7" />
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1E293B] tracking-tight mb-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight mb-2">
               Random Voice Call
             </h1>
             <p className="text-xs sm:text-sm text-[#64748B] max-w-md mx-auto mb-6">
@@ -148,13 +148,13 @@ export default function RandomVoicePage() {
             </p>
 
             {/* Hardware Status Indicator */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-semibold text-[#1E293B] mb-6">
-              <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-semibold text-[#0F172A] mb-6 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
               <span>Microphone Ready &bull; WebRTC Audio Engine</span>
               <button
                 type="button"
                 onClick={() => setShowSettingsModal(true)}
-                className="ml-2 text-[#2563EB] hover:underline cursor-pointer"
+                className="ml-2 text-[#2563EB] hover:underline cursor-pointer font-bold"
               >
                 Settings
               </button>
@@ -162,7 +162,7 @@ export default function RandomVoicePage() {
 
             {/* Topic Selector */}
             <div className="text-left mb-8">
-              <label className="block text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-3">
+              <label className="block text-xs font-bold text-[#0F172A] uppercase tracking-wider mb-3">
                 Select Voice Conversation Topic:
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -224,7 +224,7 @@ export default function RandomVoicePage() {
               </div>
             </div>
 
-            <h3 className="text-lg font-bold text-[#1E293B] mb-1">
+            <h3 className="text-lg font-bold text-[#0F172A] mb-1">
               Matching Voice Partner...
             </h3>
             <p className="text-xs text-[#64748B] mb-6">
@@ -237,7 +237,7 @@ export default function RandomVoicePage() {
                 media.stopMedia();
                 setSessionState("idle");
               }}
-              className="px-5 py-2 text-xs font-semibold text-[#64748B] hover:text-[#1E293B] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
+              className="px-5 py-2 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
             >
               Cancel
             </button>
@@ -252,8 +252,8 @@ export default function RandomVoicePage() {
             {/* Top Status */}
             <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#22C55E] animate-pulse" />
-                <span className="text-xs font-bold text-emerald-700">Voice Connected &bull; WebRTC</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse" />
+                <span className="text-xs font-bold text-emerald-700">Voice Connected &bull; WebRTC High Definition</span>
               </div>
               <div className="flex items-center gap-3">
                 <button
@@ -264,7 +264,7 @@ export default function RandomVoicePage() {
                 >
                   <Settings className="w-4 h-4" />
                 </button>
-                <div className="text-xs font-bold text-[#1E293B] bg-slate-100 px-3 py-1 rounded-full">
+                <div className="text-xs font-bold text-[#0F172A] bg-slate-100 px-3 py-1 rounded-full">
                   {formatDuration(callDuration)}
                 </div>
               </div>
@@ -280,10 +280,10 @@ export default function RandomVoicePage() {
                 >
                   {partner.avatar}
                 </div>
-                <span className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-[#22C55E] border-2 border-white" />
+                <span className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-[#10B981] border-2 border-white ring-1 ring-[#10B981]/20 animate-pulse" />
               </div>
 
-              <h2 className="text-lg font-bold text-[#1E293B]">
+              <h2 className="text-lg font-bold text-[#0F172A]">
                 {partner.name}
               </h2>
               <p className="text-xs text-[#64748B] flex items-center gap-1.5 mt-0.5">
@@ -294,7 +294,6 @@ export default function RandomVoicePage() {
               {/* Dynamic WebRTC Waveform Visualizer */}
               <div className="flex items-center gap-1.5 h-12 my-6">
                 {[6, 14, 26, 40, 20, 32, 16, 30, 10, 22, 36, 12].map((baseH, i) => {
-                  // If partner is speaking, use animated height; also respond to user's live audio level
                   const liveBoost = Math.round((media.audioLevel / 100) * 15);
                   const effectiveHeight =
                     partnerSpeaking && !isSpeakerMuted
@@ -332,7 +331,7 @@ export default function RandomVoicePage() {
                 type="button"
                 onClick={() => media.toggleAudio()}
                 className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors cursor-pointer ${
-                  media.isAudioMuted ? "bg-rose-100 text-rose-700" : "bg-slate-100 hover:bg-slate-200 text-[#1E293B]"
+                  media.isAudioMuted ? "bg-rose-100 text-rose-700" : "bg-slate-100 hover:bg-slate-200 text-[#0F172A]"
                 }`}
                 title={media.isAudioMuted ? "Unmute Mic" : "Mute Mic"}
               >
@@ -344,7 +343,7 @@ export default function RandomVoicePage() {
                 type="button"
                 onClick={() => setIsSpeakerMuted(!isSpeakerMuted)}
                 className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors cursor-pointer ${
-                  isSpeakerMuted ? "bg-rose-100 text-rose-700" : "bg-slate-100 hover:bg-slate-200 text-[#1E293B]"
+                  isSpeakerMuted ? "bg-rose-100 text-rose-700" : "bg-slate-100 hover:bg-slate-200 text-[#0F172A]"
                 }`}
                 title={isSpeakerMuted ? "Unmute Audio" : "Mute Audio"}
               >
@@ -358,7 +357,7 @@ export default function RandomVoicePage() {
                 className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors cursor-pointer ${
                   friendRequested
                     ? "bg-emerald-100 text-emerald-700"
-                    : "bg-[#EFF6FF] hover:bg-[#d8ece8] text-[#2563EB]"
+                    : "bg-[#EFF6FF] hover:bg-[#DBEAFE] text-[#2563EB]"
                 }`}
                 title="Add as Friend"
               >
@@ -397,11 +396,11 @@ export default function RandomVoicePage() {
               <Check className="w-6 h-6 text-[#2563EB]" />
             </div>
 
-            <h3 className="text-lg font-bold text-[#1E293B] mb-1">
+            <h3 className="text-lg font-bold text-[#0F172A] mb-1">
               Voice Call Ended
             </h3>
             <p className="text-xs text-[#64748B] mb-6">
-              Duration: <span className="font-bold text-[#1E293B]">{formatDuration(callDuration)}</span> with {partner?.name || "Partner"}.
+              Duration: <span className="font-bold text-[#0F172A]">{formatDuration(callDuration)}</span> with {partner?.name || "Partner"}.
             </p>
 
             <div className="flex flex-col gap-2.5">
@@ -417,7 +416,7 @@ export default function RandomVoicePage() {
               <button
                 type="button"
                 onClick={() => setSessionState("idle")}
-                className="w-full py-2 px-4 text-xs font-semibold text-[#64748B] hover:text-[#1E293B] bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
+                className="w-full py-2 px-4 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
               >
                 Change Topic
               </button>
