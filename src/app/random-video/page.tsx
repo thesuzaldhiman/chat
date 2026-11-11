@@ -5,9 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useFriends } from "@/context/FriendContext";
+import { useNotifications } from "@/context/NotificationContext";
 import { useMediaDevices } from "@/hooks/useMediaDevices";
 import DeviceSettingsModal from "@/components/DeviceSettingsModal";
-import { STRANGER_PARTNERS, MATCHING_TOPICS, StrangerPartner } from "@/data/mockStrangers";
+import { MATCHING_TOPICS } from "@/data/mockStrangers";
 import { UserProfile } from "@/types";
 import {
   Video,
@@ -23,8 +24,6 @@ import {
   MapPin,
   Clock,
   Camera,
-  Maximize2,
-  Minimize2,
   Settings,
   MessageSquare,
   Users,
@@ -37,11 +36,9 @@ import {
   Volume2,
   VolumeX,
   Share2,
-  Flame,
-  Heart,
-  ThumbsUp,
-  PartyPopper,
-  Laugh,
+  Radio,
+  ExternalLink,
+  Bot,
 } from "lucide-react";
 
 interface InCallMessage {
@@ -53,6 +50,15 @@ interface InCallMessage {
   isOwn?: boolean;
 }
 
+interface LiveVideoPartner {
+  id: string;
+  name: string;
+  avatar: string;
+  location: string;
+  interests?: string[];
+  isAiCompanion?: boolean;
+}
+
 interface ParticipantTile {
   id: string;
   name: string;
@@ -62,57 +68,44 @@ interface ParticipantTile {
   isVideoOff: boolean;
   isSpeaking: boolean;
   isHandRaised?: boolean;
+  isSelf?: boolean;
 }
-
-const DEFAULT_PARTICIPANTS: ParticipantTile[] = [
-  {
-    id: "part-1",
-    name: "Riya Sharma",
-    avatar: "/images/avatar-riya.png",
-    location: "Mumbai, India",
-    isMuted: false,
-    isVideoOff: false,
-    isSpeaking: true,
-  },
-  {
-    id: "part-2",
-    name: "Aman Verma",
-    avatar: "/images/avatar-aman.png",
-    location: "Delhi, India",
-    isMuted: false,
-    isVideoOff: false,
-    isSpeaking: false,
-  },
-  {
-    id: "part-3",
-    name: "Pooja Patel",
-    avatar: "/images/avatar-pooja.png",
-    location: "Ahmedabad, India",
-    isMuted: true,
-    isVideoOff: false,
-    isSpeaking: false,
-  },
-];
 
 export default function VideoCallPage() {
   const { user, openAuthModal } = useAuth();
   const { sendFriendRequest } = useFriends();
+  const { showToast } = useNotifications();
   const media = useMediaDevices();
+
+  // Unique tab ID for multi-tab peer discovery
+  const tabId = useRef(
+    typeof window !== "undefined"
+      ? `vtab-${Math.random().toString(36).substring(2, 9)}`
+      : "vtab-init"
+  ).current;
 
   // Call session states
   const [sessionState, setSessionState] = useState<"idle" | "searching" | "connected" | "ended">("idle");
   const [callMode, setCallMode] = useState<"one-on-one" | "group">("one-on-one");
   const [layoutMode, setLayoutMode] = useState<"spotlight" | "grid">("spotlight");
   const [selectedTopic, setSelectedTopic] = useState<string>("all");
-  const [partner, setPartner] = useState<StrangerPartner | null>(null);
+  const [partner, setPartner] = useState<LiveVideoPartner | null>(null);
+  const [matchId, setMatchId] = useState<string | null>(null);
 
   // In-call toggles & states
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [isHandRaised, setIsHandRaised] = useState(false);
   const [isSpeakerMuted, setIsSpeakerMuted] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
+  const [searchDuration, setSearchDuration] = useState(0);
   const [friendRequested, setFriendRequested] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+
+  // Peer live states
+  const [peerSpeaking, setPeerSpeaking] = useState(false);
+  const [peerVideoOff, setPeerVideoOff] = useState(false);
+  const [peerAudioMuted, setPeerAudioMuted] = useState(false);
+  const [peerHandRaised, setPeerHandRaised] = useState(false);
 
   // Side drawers (Chat & Participants)
   const [activeSideDrawer, setActiveSideDrawer] = useState<"none" | "chat" | "participants">("none");
@@ -123,12 +116,14 @@ export default function VideoCallPage() {
   // Floating Emoji reactions
   const [floatingReactions, setFloatingReactions] = useState<{ id: string; emoji: string; x: number }[]>([]);
 
-  // Local user video reference
+  // Video references
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const searchTimerRef = useRef<NodeJS.Timeout | null>(null);
   const chatBottomRef = useRef<HTMLDivElement | null>(null);
+  const sessionChannelRef = useRef<BroadcastChannel | null>(null);
 
-  // Attach local video stream
+  // Attach local video stream whenever stream changes
   useEffect(() => {
     if (localVideoRef.current && media.stream) {
       localVideoRef.current.srcObject = media.stream;
@@ -151,12 +146,138 @@ export default function VideoCallPage() {
     };
   }, [sessionState]);
 
+  // Search duration timer
+  useEffect(() => {
+    if (sessionState === "searching") {
+      setSearchDuration(0);
+      searchTimerRef.current = setInterval(() => {
+        setSearchDuration((prev) => prev + 1);
+      }, 1000);
+    } else {
+      if (searchTimerRef.current) clearInterval(searchTimerRef.current);
+    }
+    return () => {
+      if (searchTimerRef.current) clearInterval(searchTimerRef.current);
+    };
+  }, [sessionState]);
+
+  // Broadcast speaking level and hardware toggles to peer in real-time
+  useEffect(() => {
+    if (sessionChannelRef.current && sessionState === "connected") {
+      sessionChannelRef.current.postMessage({
+        type: "PEER_STATUS",
+        senderTabId: tabId,
+        isSpeaking: !media.isAudioMuted && media.audioLevel > 10,
+        isVideoOff: media.isVideoOff,
+        isAudioMuted: media.isAudioMuted,
+        isHandRaised,
+        isScreenSharing,
+      });
+    }
+  }, [media.audioLevel, media.isAudioMuted, media.isVideoOff, isHandRaised, isScreenSharing, sessionState, tabId]);
+
   // Scroll in-call chat
   useEffect(() => {
     if (activeSideDrawer === "chat") {
       chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [inCallMessages, activeSideDrawer]);
+
+  // Multi-tab Peer Discovery Queue using BroadcastChannel
+  useEffect(() => {
+    if (typeof window === "undefined" || !("BroadcastChannel" in window)) return;
+    const queueChannel = new BroadcastChannel("chatverse_random_video_queue");
+
+    queueChannel.onmessage = (event) => {
+      const data = event.data;
+      if (!data || data.senderTabId === tabId) return;
+
+      if (data.type === "SEARCH_PING" && sessionState === "searching") {
+        const sharedMatchId = `video-${[tabId, data.senderTabId].sort().join("-")}`;
+        queueChannel.postMessage({
+          type: "MATCH_OFFER",
+          targetTabId: data.senderTabId,
+          senderTabId: tabId,
+          matchId: sharedMatchId,
+          user: {
+            id: user?.id || tabId,
+            name: user?.name || "Video Member",
+            avatar: user?.avatar || "📹",
+            location: user?.location || "Video Network",
+            interests: user?.interests || ["Live Video"],
+          },
+          callMode,
+        });
+
+        setPartner({
+          id: data.user.id,
+          name: data.user.name,
+          avatar: data.user.avatar,
+          location: data.user.location,
+          interests: data.user.interests,
+          isAiCompanion: false,
+        });
+        setMatchId(sharedMatchId);
+        setSessionState("connected");
+      } else if (data.type === "MATCH_OFFER" && data.targetTabId === tabId && sessionState === "searching") {
+        setPartner({
+          id: data.user.id,
+          name: data.user.name,
+          avatar: data.user.avatar,
+          location: data.user.location,
+          interests: data.user.interests,
+          isAiCompanion: false,
+        });
+        setMatchId(data.matchId);
+        setSessionState("connected");
+      }
+    };
+
+    return () => {
+      queueChannel.close();
+    };
+  }, [sessionState, tabId, user, callMode]);
+
+  // Session channel communication for active video call
+  useEffect(() => {
+    if (!matchId || typeof window === "undefined" || !("BroadcastChannel" in window)) return;
+    const sessionChannel = new BroadcastChannel(`chatverse_video_session_${matchId}`);
+    sessionChannelRef.current = sessionChannel;
+
+    sessionChannel.onmessage = (event) => {
+      const data = event.data;
+      if (!data || data.senderTabId === tabId) return;
+
+      if (data.type === "PEER_STATUS") {
+        setPeerSpeaking(Boolean(data.isSpeaking));
+        setPeerVideoOff(Boolean(data.isVideoOff));
+        setPeerAudioMuted(Boolean(data.isAudioMuted));
+        setPeerHandRaised(Boolean(data.isHandRaised));
+      } else if (data.type === "INCALL_MESSAGE") {
+        setInCallMessages((prev) => [...prev, data.message]);
+        setActiveSideDrawer((current) => {
+          if (current !== "chat") {
+            setUnreadChatCount((count) => count + 1);
+          }
+          return current;
+        });
+      } else if (data.type === "EMOJI_REACTION") {
+        const id = `react-${Date.now()}-${Math.random()}`;
+        setFloatingReactions((prev) => [...prev, { id, emoji: data.emoji, x: data.x }]);
+        setTimeout(() => {
+          setFloatingReactions((prev) => prev.filter((r) => r.id !== id));
+        }, 2000);
+      } else if (data.type === "PEER_DISCONNECT") {
+        media.stopMedia();
+        setSessionState("ended");
+      }
+    };
+
+    return () => {
+      sessionChannel.close();
+      sessionChannelRef.current = null;
+    };
+  }, [matchId, tabId, media]);
 
   const formatDuration = (seconds: number) => {
     const hrs = Math.floor(seconds / 3600);
@@ -173,6 +294,9 @@ export default function VideoCallPage() {
     setSessionState("searching");
     setPartner(null);
     setFriendRequested(false);
+    setMatchId(null);
+    setInCallMessages([]);
+    setUnreadChatCount(0);
 
     try {
       await media.startMedia("video");
@@ -180,18 +304,75 @@ export default function VideoCallPage() {
       // Fallback seamlessly
     }
 
-    setTimeout(() => {
-      const randomIdx = Math.floor(Math.random() * STRANGER_PARTNERS.length);
-      setPartner(STRANGER_PARTNERS[randomIdx]);
-      setSessionState("connected");
-    }, 1500);
+    try {
+      if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+        const queueChannel = new BroadcastChannel("chatverse_random_video_queue");
+        queueChannel.postMessage({
+          type: "SEARCH_PING",
+          senderTabId: tabId,
+          topic: selectedTopic,
+          callMode: mode,
+          user: {
+            id: user?.id || tabId,
+            name: user?.name || "Video Member",
+            avatar: user?.avatar || "📹",
+            location: user?.location || "Video Network",
+            interests: user?.interests || ["Live Video"],
+          },
+        });
+        queueChannel.close();
+      }
+    } catch {}
+  };
+
+  const handleConnectWithAssistant = async () => {
+    try {
+      await media.startMedia("video");
+    } catch {}
+
+    const companion: LiveVideoPartner = {
+      id: "companion-video-lab",
+      name: "WebRTC Video Studio Lab 🎥",
+      avatar: "🎥",
+      location: "Interactive Camera & Audio Monitor",
+      interests: ["Video Quality", "Microphone Test", "Screen Sharing"],
+      isAiCompanion: true,
+    };
+    setPartner(companion);
+    setMatchId(`video-lab-${Date.now()}`);
+    setInCallMessages([
+      {
+        id: "msg-welcome-lab",
+        sender: "Studio Lab Companion",
+        text: "👋 Welcome! Your camera and microphone streams are live. Test video toggles, screen share, raise hand, or send reactions anytime!",
+        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        isOwn: false,
+      },
+    ]);
+    setSessionState("connected");
   };
 
   const handleNextStranger = () => {
+    if (sessionChannelRef.current) {
+      try {
+        sessionChannelRef.current.postMessage({
+          type: "PEER_DISCONNECT",
+          senderTabId: tabId,
+        });
+      } catch {}
+    }
     startMatching(callMode);
   };
 
   const handleEndCall = () => {
+    if (sessionChannelRef.current) {
+      try {
+        sessionChannelRef.current.postMessage({
+          type: "PEER_DISCONNECT",
+          senderTabId: tabId,
+        });
+      } catch {}
+    }
     media.stopMedia();
     setIsScreenSharing(false);
     setIsHandRaised(false);
@@ -213,12 +394,42 @@ export default function VideoCallPage() {
 
     setInCallMessages((prev) => [...prev, newMsg]);
     setChatInputText("");
+
+    if (sessionChannelRef.current) {
+      sessionChannelRef.current.postMessage({
+        type: "INCALL_MESSAGE",
+        senderTabId: tabId,
+        message: { ...newMsg, isOwn: false },
+      });
+    }
+
+    if (partner?.isAiCompanion) {
+      setTimeout(() => {
+        const replyMsg: InCallMessage = {
+          id: `companion-reply-${Date.now()}`,
+          sender: "Studio Companion",
+          text: `Message received: "${newMsg.text}". Both audio & video pipelines are responding smoothly!`,
+          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          isOwn: false,
+        };
+        setInCallMessages((prev) => [...prev, replyMsg]);
+      }, 900);
+    }
   };
 
   const triggerReaction = (emoji: string) => {
     const id = `react-${Date.now()}-${Math.random()}`;
     const x = Math.floor(Math.random() * 60) + 20; // 20% to 80%
     setFloatingReactions((prev) => [...prev, { id, emoji, x }]);
+
+    if (sessionChannelRef.current) {
+      sessionChannelRef.current.postMessage({
+        type: "EMOJI_REACTION",
+        senderTabId: tabId,
+        emoji,
+        x,
+      });
+    }
 
     setTimeout(() => {
       setFloatingReactions((prev) => prev.filter((r) => r.id !== id));
@@ -239,17 +450,48 @@ export default function VideoCallPage() {
       avatar: partner.avatar,
       isGuest: false,
       joinedAt: "Recent",
-      bio: `Matched in Random Video Call.`,
+      bio: `Connected in Random Video Call.`,
       location: partner.location,
-      interests: partner.interests,
+      interests: partner.interests || ["Video Chat"],
       role: "User",
       isOnline: true,
-      friendsCount: 16,
+      friendsCount: 1,
     };
 
     sendFriendRequest(pseudoProfile);
     setFriendRequested(true);
+    showToast(`Friend request sent to ${partner.name}!`, "success");
   };
+
+  // Build dynamic participants list
+  const participantsList: ParticipantTile[] = [
+    {
+      id: user?.id || "local-self",
+      name: user?.name ? `${user.name} (You)` : "You",
+      avatar: user?.avatar || "👤",
+      location: user?.location || "Local Stream",
+      isMuted: media.isAudioMuted,
+      isVideoOff: media.isVideoOff,
+      isSpeaking: !media.isAudioMuted && media.audioLevel > 10,
+      isHandRaised,
+      isSelf: true,
+    },
+    ...(partner
+      ? [
+          {
+            id: partner.id,
+            name: partner.name,
+            avatar: partner.avatar,
+            location: partner.location,
+            isMuted: peerAudioMuted,
+            isVideoOff: peerVideoOff,
+            isSpeaking: peerSpeaking,
+            isHandRaised: peerHandRaised,
+            isSelf: false,
+          },
+        ]
+      : []),
+  ];
 
   return (
     <div className="h-[calc(100vh-58px)] w-full bg-slate-950 text-white flex flex-col relative overflow-hidden select-none">
@@ -368,7 +610,7 @@ export default function VideoCallPage() {
                 <button
                   type="button"
                   onClick={() => setShowSettingsModal(true)}
-                  className="text-[#2563EB] font-semibold hover:underline"
+                  className="text-[#2563EB] font-semibold hover:underline cursor-pointer"
                 >
                   Configure Devices
                 </button>
@@ -380,7 +622,7 @@ export default function VideoCallPage() {
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFF6FF] text-[#2563EB] text-xs font-bold mb-3">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>Next-Gen Video Experience</span>
+                  <span>Real-Time P2P Video</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight mb-2">
                   Start Video Call
@@ -422,7 +664,7 @@ export default function VideoCallPage() {
                 <button
                   type="button"
                   onClick={() => startMatching("one-on-one")}
-                  className="w-full py-3.5 px-6 rounded-2xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs sm:text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 px-6 rounded-2xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs sm:text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                 >
                   <Video className="w-4 h-4" />
                   <span>Start 1-on-1 Video Match</span>
@@ -431,10 +673,19 @@ export default function VideoCallPage() {
                 <button
                   type="button"
                   onClick={() => startMatching("group")}
-                  className="w-full py-3 px-6 rounded-2xl bg-white hover:bg-slate-50 border border-[#E2E8F0] text-[#0F172A] text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3 px-6 rounded-2xl bg-white hover:bg-slate-50 border border-[#E2E8F0] text-[#0F172A] text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                 >
                   <Users className="w-4 h-4 text-[#2563EB]" />
                   <span>Join Community Group Call</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleConnectWithAssistant}
+                  className="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#475569] text-xs font-medium transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Bot className="w-3.5 h-3.5 text-[#2563EB]" />
+                  <span>Or Launch Video &amp; Mic Hardware Studio</span>
                 </button>
               </div>
 
@@ -462,12 +713,41 @@ export default function VideoCallPage() {
               </div>
             </div>
 
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-emerald-400 font-semibold mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Broadcast Discovery Active ({searchDuration}s)</span>
+            </div>
+
             <h3 className="text-xl font-bold text-white mb-2">
-              Connecting Video Stream...
+              Looking for a Video Peer...
             </h3>
-            <p className="text-xs text-slate-400 mb-8 leading-relaxed">
-              Finding the best peer-to-peer WebRTC connection across the global network
+            <p className="text-xs text-slate-400 mb-6 leading-relaxed">
+              Searching for an active partner in topic &quot;{selectedTopic}&quot;. Open another browser window to match immediately.
             </p>
+
+            <div className="flex flex-col gap-2.5 mb-6">
+              <button
+                type="button"
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.open("/random-video", "_blank");
+                  }
+                }}
+                className="w-full py-2.5 px-4 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Open 2nd Window to Test Match</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleConnectWithAssistant}
+                className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition-all flex items-center justify-center gap-2 cursor-pointer border border-slate-700"
+              >
+                <Bot className="w-3.5 h-3.5 text-blue-400" />
+                <span>Connect with Studio Lab Instantly</span>
+              </button>
+            </div>
 
             <button
               type="button"
@@ -475,7 +755,7 @@ export default function VideoCallPage() {
                 media.stopMedia();
                 setSessionState("idle");
               }}
-              className="px-6 py-2.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors cursor-pointer border border-slate-700"
+              className="px-6 py-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors cursor-pointer"
             >
               Cancel Match
             </button>
@@ -544,10 +824,10 @@ export default function VideoCallPage() {
               )}
 
               {/* Hand Raised Banner */}
-              {isHandRaised && (
+              {(isHandRaised || peerHandRaised) && (
                 <div className="absolute top-4 right-4 z-20 px-3 py-1.5 rounded-xl bg-amber-950/80 border border-amber-500/40 text-amber-300 text-xs font-semibold flex items-center gap-2">
                   <Hand className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Your hand is raised</span>
+                  <span>{isHandRaised ? "Your hand is raised" : `${partner?.name || "Peer"} raised their hand`}</span>
                 </div>
               )}
 
@@ -558,19 +838,25 @@ export default function VideoCallPage() {
                   <div className="flex flex-col items-center justify-center text-center p-6">
                     <div className="relative mb-4">
                       <div className="w-32 sm:w-40 h-32 sm:h-40 rounded-3xl bg-slate-800/90 border-2 border-[#2563EB]/40 flex items-center justify-center text-6xl sm:text-7xl shadow-2xl backdrop-blur-md ring-4 ring-[#2563EB]/10">
-                        {partner?.avatar || "👩‍🦰"}
+                        {partner?.avatar || "📹"}
                       </div>
-                      <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-[#10B981] border-2 border-slate-900 animate-pulse" />
+                      <span
+                        className={`absolute bottom-1 right-1 w-5 h-5 rounded-full border-2 border-slate-900 ${
+                          peerSpeaking ? "bg-[#10B981] animate-ping" : "bg-[#10B981]"
+                        }`}
+                      />
                     </div>
 
                     <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
-                      {partner?.name || "Riya Sharma"}
+                      {partner?.name || "Connected Partner"}
                     </h3>
                     <p className="text-xs text-blue-400 mt-1 flex items-center gap-1.5">
                       <MapPin className="w-3 h-3 text-blue-500" />
-                      <span>{partner?.location || "Mumbai, India"}</span>
+                      <span>{partner?.location || "Live Network"}</span>
                       <span>&bull;</span>
-                      <span>Speaking</span>
+                      <span className={peerSpeaking ? "text-emerald-400 font-bold" : "text-slate-400"}>
+                        {peerSpeaking ? "Speaking" : peerAudioMuted ? "Muted" : "Listening"}
+                      </span>
                     </p>
                   </div>
 
@@ -610,35 +896,18 @@ export default function VideoCallPage() {
 
               {/* Video Layout: Multi-participant Grid Mode */}
               {layoutMode === "grid" && (
-                <div className="w-full h-full max-w-5xl grid grid-cols-2 gap-3 sm:gap-4 p-2">
-                  {/* Remote Tile 1 */}
-                  <div className="relative rounded-2xl bg-slate-900 border border-slate-800 flex flex-col items-center justify-center overflow-hidden shadow-lg">
-                    <div className="w-20 sm:w-24 h-20 sm:h-24 rounded-2xl bg-slate-800 border border-blue-500/30 flex items-center justify-center text-4xl sm:text-5xl mb-2">
-                      {partner?.avatar || "👩‍🦰"}
+                <div className="w-full h-full max-w-5xl grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-2">
+                  {/* Remote Tile */}
+                  <div className="relative rounded-2xl bg-slate-900 border border-slate-800 flex flex-col items-center justify-center overflow-hidden shadow-lg p-6">
+                    <div className="w-24 h-24 rounded-2xl bg-slate-800 border border-blue-500/30 flex items-center justify-center text-5xl mb-3">
+                      {partner?.avatar || "📹"}
                     </div>
-                    <span className="text-xs font-bold text-white">{partner?.name || "Riya"}</span>
-                    <span className="absolute bottom-2 left-3 text-[10px] text-blue-400 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                      Active
+                    <span className="text-sm font-bold text-white mb-1">{partner?.name || "Peer"}</span>
+                    <span className="text-xs text-slate-400">{partner?.location || "Live Network"}</span>
+                    <span className="absolute bottom-3 left-3 text-[10px] text-blue-400 flex items-center gap-1.5">
+                      <span className={`w-2 h-2 rounded-full ${peerSpeaking ? "bg-emerald-400 animate-ping" : "bg-emerald-400"}`} />
+                      {peerSpeaking ? "Speaking" : "Active"}
                     </span>
-                  </div>
-
-                  {/* Remote Tile 2 */}
-                  <div className="relative rounded-2xl bg-slate-900 border border-slate-800 flex flex-col items-center justify-center overflow-hidden shadow-lg">
-                    <div className="w-20 sm:w-24 h-20 sm:h-24 rounded-2xl bg-slate-800 border border-white/20 flex items-center justify-center text-4xl sm:text-5xl mb-2">
-                      👨‍💻
-                    </div>
-                    <span className="text-xs font-bold text-white">Aman Verma</span>
-                    <span className="absolute bottom-2 left-3 text-[10px] text-slate-400">Online</span>
-                  </div>
-
-                  {/* Remote Tile 3 */}
-                  <div className="relative rounded-2xl bg-slate-900 border border-slate-800 flex flex-col items-center justify-center overflow-hidden shadow-lg">
-                    <div className="w-20 sm:w-24 h-20 sm:h-24 rounded-2xl bg-slate-800 border border-white/20 flex items-center justify-center text-4xl sm:text-5xl mb-2">
-                      🌸
-                    </div>
-                    <span className="text-xs font-bold text-white">Pooja Patel</span>
-                    <span className="absolute bottom-2 left-3 text-[10px] text-slate-400">Muted</span>
                   </div>
 
                   {/* Local User Tile */}
@@ -657,7 +926,8 @@ export default function VideoCallPage() {
                         <span className="text-xs">Camera Off</span>
                       </div>
                     )}
-                    <span className="absolute bottom-2 left-3 text-[10px] text-white font-bold bg-black/60 px-2 py-0.5 rounded">
+                    <span className="absolute bottom-3 left-3 text-[10px] text-white font-bold bg-black/60 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                      <span className={`w-2 h-2 rounded-full ${media.isAudioMuted ? "bg-rose-500" : "bg-emerald-400"}`} />
                       You
                     </span>
                   </div>
@@ -678,34 +948,42 @@ export default function VideoCallPage() {
                   <button
                     type="button"
                     onClick={() => setActiveSideDrawer("none")}
-                    className="p-1 text-slate-400 hover:text-white"
+                    className="p-1 text-slate-400 hover:text-white cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs">
-                  {inCallMessages.map((msg) => (
-                    <div
-                      key={msg.id}
-                      className={`flex flex-col ${msg.isOwn ? "items-end" : "items-start"}`}
-                    >
-                      <div className="flex items-center gap-1.5 mb-0.5 text-[10px] text-slate-400">
-                        <span>{msg.sender}</span>
-                        <span>&bull;</span>
-                        <span>{msg.time}</span>
-                      </div>
-                      <div
-                        className={`px-3 py-2 rounded-2xl max-w-[85%] leading-relaxed ${
-                          msg.isOwn
-                            ? "bg-[#2563EB] text-white rounded-tr-xs"
-                            : "bg-slate-800 text-slate-100 rounded-tl-xs border border-slate-700/60"
-                        }`}
-                      >
-                        {msg.text}
-                      </div>
+                  {inCallMessages.length === 0 ? (
+                    <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400">
+                      <MessageSquare className="w-8 h-8 text-slate-600 mb-2" />
+                      <p className="font-semibold text-slate-300">No messages yet</p>
+                      <p className="text-[11px] text-slate-500 mt-1">Send a message to everyone in this call.</p>
                     </div>
-                  ))}
+                  ) : (
+                    inCallMessages.map((msg) => (
+                      <div
+                        key={msg.id}
+                        className={`flex flex-col ${msg.isOwn ? "items-end" : "items-start"}`}
+                      >
+                        <div className="flex items-center gap-1.5 mb-0.5 text-[10px] text-slate-400">
+                          <span>{msg.sender}</span>
+                          <span>&bull;</span>
+                          <span>{msg.time}</span>
+                        </div>
+                        <div
+                          className={`px-3 py-2 rounded-2xl max-w-[85%] leading-relaxed ${
+                            msg.isOwn
+                              ? "bg-[#2563EB] text-white rounded-tr-xs"
+                              : "bg-slate-800 text-slate-100 rounded-tl-xs border border-slate-700/60"
+                          }`}
+                        >
+                          {msg.text}
+                        </div>
+                      </div>
+                    ))
+                  )}
                   <div ref={chatBottomRef} />
                 </div>
 
@@ -718,7 +996,7 @@ export default function VideoCallPage() {
                     type="text"
                     value={chatInputText}
                     onChange={(e) => setChatInputText(e.target.value)}
-                    placeholder="Send a message to everyone..."
+                    placeholder="Send a message to call..."
                     className="flex-1 px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#2563EB]"
                   />
                   <button
@@ -739,83 +1017,51 @@ export default function VideoCallPage() {
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-[#2563EB]" />
-                    <h3 className="text-sm font-bold text-white">Participants (4)</h3>
+                    <h3 className="text-sm font-bold text-white">Participants ({participantsList.length})</h3>
                   </div>
                   <button
                     type="button"
                     onClick={() => setActiveSideDrawer("none")}
-                    className="p-1 text-slate-400 hover:text-white"
+                    className="p-1 text-slate-400 hover:text-white cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                  {/* You */}
-                  <div className="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-[#2563EB] text-white font-bold text-xs flex items-center justify-center">
-                        {user?.name ? user.name[0] : "Y"}
+                  {participantsList.map((p) => (
+                    <div
+                      key={p.id}
+                      className={`p-2.5 rounded-xl border flex items-center justify-between ${
+                        p.isSelf
+                          ? "bg-slate-800/80 border-slate-700/60"
+                          : "bg-slate-800/40 border-slate-700/40"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-full bg-[#2563EB] text-white font-bold text-xs flex items-center justify-center">
+                          {p.avatar}
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-white">{p.name}</p>
+                          <p className="text-[10px] text-slate-400">{p.location}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs font-bold text-white">{user?.name || "You (Host)"}</p>
-                        <p className="text-[10px] text-slate-400">Local Stream</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-slate-400">
-                      {media.isAudioMuted ? <MicOff className="w-4 h-4 text-rose-400" /> : <Mic className="w-4 h-4 text-emerald-400" />}
-                      {media.isVideoOff ? <VideoOff className="w-4 h-4 text-rose-400" /> : <Video className="w-4 h-4 text-emerald-400" />}
-                    </div>
-                  </div>
-
-                  {/* Partner / Others */}
-                  <div className="p-2.5 rounded-xl bg-slate-800/40 border border-slate-700/40 flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-slate-800 text-white font-bold text-sm flex items-center justify-center">
-                        {partner?.avatar || "👩‍🦰"}
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-white">{partner?.name || "Riya Sharma"}</p>
-                        <p className="text-[10px] text-slate-400">{partner?.location || "Mumbai, India"}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-slate-400">
-                      <Mic className="w-4 h-4 text-emerald-400" />
-                      <Video className="w-4 h-4 text-emerald-400" />
-                    </div>
-                  </div>
-
-                  <div className="p-2.5 rounded-xl bg-slate-800/40 border border-slate-700/40 flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-slate-800 text-white font-bold text-sm flex items-center justify-center">
-                        👨‍💻
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-white">Aman Verma</p>
-                        <p className="text-[10px] text-slate-400">Delhi, India</p>
+                      <div className="flex items-center gap-2 text-slate-400">
+                        {p.isHandRaised && <Hand className="w-3.5 h-3.5 text-amber-400 animate-pulse" />}
+                        {p.isMuted ? (
+                          <MicOff className="w-4 h-4 text-rose-400" />
+                        ) : (
+                          <Mic className={`w-4 h-4 ${p.isSpeaking ? "text-emerald-400 animate-pulse" : "text-slate-400"}`} />
+                        )}
+                        {p.isVideoOff ? (
+                          <VideoOff className="w-4 h-4 text-rose-400" />
+                        ) : (
+                          <Video className="w-4 h-4 text-emerald-400" />
+                        )}
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 text-slate-400">
-                      <Mic className="w-4 h-4 text-emerald-400" />
-                      <Video className="w-4 h-4 text-emerald-400" />
-                    </div>
-                  </div>
-
-                  <div className="p-2.5 rounded-xl bg-slate-800/40 border border-slate-700/40 flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-slate-800 text-white font-bold text-sm flex items-center justify-center">
-                        🌸
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-white">Pooja Patel</p>
-                        <p className="text-[10px] text-slate-400">Ahmedabad, India</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-slate-400">
-                      <MicOff className="w-4 h-4 text-rose-400" />
-                      <Video className="w-4 h-4 text-emerald-400" />
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
                 {/* Invite CTA */}
@@ -825,7 +1071,7 @@ export default function VideoCallPage() {
                     onClick={() => {
                       if (typeof navigator !== "undefined" && navigator.clipboard) {
                         navigator.clipboard.writeText(window.location.href);
-                        alert("Video meeting link copied to clipboard!");
+                        showToast("Meeting link copied to clipboard!", "success");
                       }
                     }}
                     className="w-full py-2.5 px-4 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"

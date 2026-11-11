@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "@/config/site";
 import { MOCK_ROOMS } from "@/data/mockData";
+import { ChatRoom } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 import FeatureCard from "@/components/FeatureCard";
 import RoomCard from "@/components/RoomCard";
@@ -31,6 +32,16 @@ export default function HomePage() {
   const { user, openAuthModal } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [activeTab, setActiveTab] = useState<"rooms" | "matching">("rooms");
+  const [customRooms, setCustomRooms] = useState<ChatRoom[]>([]);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("chatverse_custom_rooms");
+      if (stored) {
+        setCustomRooms(JSON.parse(stored));
+      }
+    } catch {}
+  }, []);
 
   const categories = [
     "All",
@@ -41,12 +52,18 @@ export default function HomePage() {
     "Late Night",
   ];
 
-  const filteredRooms =
-    selectedCategory === "All"
-      ? MOCK_ROOMS.slice(0, 6)
-      : MOCK_ROOMS.filter((r) =>
-          r.category.toLowerCase().includes(selectedCategory.toLowerCase())
-        ).slice(0, 6);
+  const allAvailableRooms = useMemo(() => {
+    return [...customRooms, ...MOCK_ROOMS];
+  }, [customRooms]);
+
+  const filteredRooms = useMemo(() => {
+    if (selectedCategory === "All") {
+      return allAvailableRooms.slice(0, 6);
+    }
+    return allAvailableRooms
+      .filter((r) => r.category.toLowerCase().includes(selectedCategory.toLowerCase()))
+      .slice(0, 6);
+  }, [allAvailableRooms, selectedCategory]);
 
   return (
     <div className="flex flex-col gap-16 sm:gap-24 py-8 sm:py-14 overflow-hidden">
