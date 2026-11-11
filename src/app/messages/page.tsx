@@ -34,7 +34,7 @@ function MessagesContent() {
   const searchParams = useSearchParams();
   const targetUsername = searchParams.get("user");
 
-  const { user, openAuthModal, getUserProfile } = useAuth();
+  const { user, openAuthModal, getUserProfile, getAllCommunityUsers } = useAuth();
   const { friends, getFriendshipStatus } = useFriends();
   const { startCall } = useCall();
   const {
@@ -557,12 +557,32 @@ function MessagesContent() {
             </div>
 
             <p className="text-xs text-[#64748B] mt-2 mb-4">
-              Select one of your friends to start chatting with:
+              Select a friend or community member to start chatting with:
             </p>
 
             <div className="max-h-72 overflow-y-auto space-y-2">
-              {friends.length > 0 ? (
-                friends.map((f) => (
+              {(() => {
+                const community = getAllCommunityUsers().filter(
+                  (u) => !user || (u.id !== user.id && u.username !== user.username)
+                );
+                const candidates = community.length > 0 ? community : friends;
+
+                if (candidates.length === 0) {
+                  return (
+                    <div className="text-center py-6 text-xs text-[#64748B]">
+                      <p>No other members found.</p>
+                      <Link
+                        href="/friends"
+                        onClick={() => setShowNewChatModal(false)}
+                        className="text-[#2563EB] font-semibold underline mt-2 block"
+                      >
+                        Explore the Community
+                      </Link>
+                    </div>
+                  );
+                }
+
+                return candidates.map((f) => (
                   <button
                     key={f.id}
                     type="button"
@@ -590,19 +610,8 @@ function MessagesContent() {
                       Chat →
                     </span>
                   </button>
-                ))
-              ) : (
-                <div className="text-center py-6 text-xs text-[#64748B]">
-                  <p>You don&apos;t have any friends yet.</p>
-                  <Link
-                    href="/friends"
-                    onClick={() => setShowNewChatModal(false)}
-                    className="text-[#2563EB] font-semibold underline mt-2 block"
-                  >
-                    Discover People to Add Friends
-                  </Link>
-                </div>
-              )}
+                ));
+              })()}
             </div>
           </div>
         </div>

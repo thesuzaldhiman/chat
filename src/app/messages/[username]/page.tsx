@@ -37,8 +37,11 @@ export default function DirectMessagePage() {
       const found = getUserProfile(username);
       setTargetUser(found);
       setLoading(false);
+      if (found) {
+        router.replace(`/messages?user=${found.username}`);
+      }
     }
-  }, [username, getUserProfile]);
+  }, [username, getUserProfile, router]);
 
   const isImageAvatar = (av?: string) => av && av.startsWith("/");
 

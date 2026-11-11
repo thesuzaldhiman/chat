@@ -17,43 +17,6 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
-const SEED_NOTIFICATIONS: NotificationItem[] = [
-  {
-    id: "notif-1",
-    type: "friend_request",
-    title: "Friend Request",
-    description: "Riya ♡ sent you a friend request",
-    timestamp: "5m ago",
-    createdAt: Date.now() - 5 * 60 * 1000,
-    read: false,
-    avatar: "/images/avatar-riya.png",
-    actionUrl: "/friends?tab=requests",
-    data: { username: "riya" },
-  },
-  {
-    id: "notif-2",
-    type: "room_invite",
-    title: "Trending Room",
-    description: "Love Chat ❤️ is buzzing with over 1,200 online members right now!",
-    timestamp: "25m ago",
-    createdAt: Date.now() - 25 * 60 * 1000,
-    read: true,
-    avatar: "/images/thumb-love-sm.png",
-    actionUrl: "/rooms/love-chat",
-    data: { roomSlug: "love-chat" },
-  },
-  {
-    id: "notif-3",
-    type: "system",
-    title: "Welcome to ChatVerse!",
-    description: "Your session is live. Explore public rooms or start an instant random voice chat.",
-    timestamp: "1h ago",
-    createdAt: Date.now() - 60 * 60 * 1000,
-    read: true,
-    actionUrl: "/rooms",
-  },
-];
-
 const STORAGE_KEY = "chatverse_notifications";
 
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
@@ -68,11 +31,10 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       if (stored) {
         setNotifications(JSON.parse(stored));
       } else {
-        setNotifications(SEED_NOTIFICATIONS);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(SEED_NOTIFICATIONS));
+        setNotifications([]);
       }
     } catch {
-      setNotifications(SEED_NOTIFICATIONS);
+      setNotifications([]);
     }
     setIsLoaded(true);
   }, []);

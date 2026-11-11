@@ -29,7 +29,7 @@ export function MessageProvider({ children }: { children: React.ReactNode }) {
   const [messagesMap, setMessagesMap] = useState<Record<string, PrivateMessage[]>>({});
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Initialize and seed conversations
+  // Initialize conversations from localStorage
   useEffect(() => {
     try {
       const storedConvs = localStorage.getItem(`${storageKeyPrefix}_convs`);
@@ -39,105 +39,63 @@ export function MessageProvider({ children }: { children: React.ReactNode }) {
         setConversationsMap(JSON.parse(storedConvs));
         setMessagesMap(JSON.parse(storedMsgs));
       } else {
-        // Seed initial conversations with Riya and Sophia
-        const riya = INITIAL_COMMUNITY_USERS.find((u) => u.username === "riya");
-        const sophia = INITIAL_COMMUNITY_USERS.find((u) => u.username === "sophia_c");
-
-        const initialConvs: Record<string, Conversation> = {};
-        const initialMsgs: Record<string, PrivateMessage[]> = {};
-
-        if (riya) {
-          const convRiyaId = `conv-${riya.id}`;
-          const riyaMessages: PrivateMessage[] = [
-            {
-              id: "msg-init-1",
-              conversationId: convRiyaId,
-              senderId: riya.id,
-              receiverId: currentUserId,
-              text: "Hey! Loved your thoughts in Love Chat earlier today 👋",
-              timestamp: "10:32 AM",
-              createdAt: Date.now() - 3600000,
-              status: "read",
-            },
-            {
-              id: "msg-init-2",
-              conversationId: convRiyaId,
-              senderId: currentUserId,
-              receiverId: riya.id,
-              text: "Thanks Riya! The community vibes are genuinely awesome here.",
-              timestamp: "10:35 AM",
-              createdAt: Date.now() - 3000000,
-              status: "read",
-            },
-            {
-              id: "msg-init-3",
-              conversationId: convRiyaId,
-              senderId: riya.id,
-              receiverId: currentUserId,
-              text: "Are you planning to join the Late Night Talks room tonight? We are discussing favorite books and lo-fi tracks! ☕",
-              timestamp: "10:45 AM",
-              createdAt: Date.now() - 1800000,
-              status: "delivered",
-            },
-          ];
-
-          initialConvs[convRiyaId] = {
-            id: convRiyaId,
-            participantIds: [currentUserId, riya.id],
-            otherUser: riya,
-            lastMessage: riyaMessages[riyaMessages.length - 1],
-            unreadCount: 1,
-            updatedAt: Date.now() - 1800000,
-          };
-          initialMsgs[convRiyaId] = riyaMessages;
-        }
-
-        if (sophia) {
-          const convSophiaId = `conv-${sophia.id}`;
-          const sophiaMessages: PrivateMessage[] = [
-            {
-              id: "msg-init-4",
-              conversationId: convSophiaId,
-              senderId: sophia.id,
-              receiverId: currentUserId,
-              text: "Hey, check out the new design palette for the chat rooms! Thoughts? 🎨",
-              timestamp: "Yesterday",
-              createdAt: Date.now() - 86400000,
-              status: "read",
-            },
-            {
-              id: "msg-init-5",
-              conversationId: convSophiaId,
-              senderId: currentUserId,
-              receiverId: sophia.id,
-              text: "The royal azure theme looks very premium and modern.",
-              timestamp: "Yesterday",
-              createdAt: Date.now() - 80000000,
-              status: "read",
-            },
-          ];
-
-          initialConvs[convSophiaId] = {
-            id: convSophiaId,
-            participantIds: [currentUserId, sophia.id],
-            otherUser: sophia,
-            lastMessage: sophiaMessages[sophiaMessages.length - 1],
-            unreadCount: 0,
-            updatedAt: Date.now() - 80000000,
-          };
-          initialMsgs[convSophiaId] = sophiaMessages;
-        }
-
-        setConversationsMap(initialConvs);
-        setMessagesMap(initialMsgs);
-        localStorage.setItem(`${storageKeyPrefix}_convs`, JSON.stringify(initialConvs));
-        localStorage.setItem(`${storageKeyPrefix}_msgs`, JSON.stringify(initialMsgs));
+        setConversationsMap({});
+        setMessagesMap({});
       }
     } catch (e) {
       console.warn("Message storage initialization error:", e);
+      setConversationsMap({});
+      setMessagesMap({});
     } finally {
       setIsLoaded(true);
     }
+  }, [currentUserId, storageKeyPrefix]);
+
+  // Real-time multi-tab DM sync with BroadcastChannel
+  useEffect(() => {
+    if (typeof window === "undefined" || !("BroadcastChannel" in window)) return;
+    const channel = new BroadcastChannel("chatverse_dms");
+
+    channel.onmessage = (event) => {
+      const data = event.data;
+      if (data?.type === "NEW_DM" && data.message) {
+        const msg = data.message as PrivateMessage;
+        if (msg.receiverId === currentUserId || msg.senderId === currentUserId) {
+          const convId = msg.conversationId;
+          setMessagesMap((prev) => {
+            const list = prev[convId] || [];
+            if (list.some((m) => m.id === msg.id)) return prev;
+            const updated = { ...prev, [convId]: [...list, msg] };
+            try {
+              localStorage.setItem(`${storageKeyPrefix}_msgs`, JSON.stringify(updated));
+            } catch {}
+            return updated;
+          });
+
+          setConversationsMap((prev) => {
+            const existing = prev[convId];
+            if (!existing) return prev;
+            const updated = {
+              ...prev,
+              [convId]: {
+                ...existing,
+                lastMessage: msg,
+                unreadCount: msg.senderId !== currentUserId ? existing.unreadCount + 1 : existing.unreadCount,
+                updatedAt: Date.now(),
+              },
+            };
+            try {
+              localStorage.setItem(`${storageKeyPrefix}_convs`, JSON.stringify(updated));
+            } catch {}
+            return updated;
+          });
+        }
+      }
+    };
+
+    return () => {
+      channel.close();
+    };
   }, [currentUserId, storageKeyPrefix]);
 
   // Persist helpers
@@ -223,55 +181,52 @@ export function MessageProvider({ children }: { children: React.ReactNode }) {
 
     saveState(updatedConvs, updatedMsgs);
 
-    // Simulate smart interactive auto-reply after 2.5 seconds if sending to Riya
-    if (receiverUser.username === "riya") {
-      setTimeout(() => {
-        const replyText =
-          clean.toLowerCase().includes("movie") || clean.toLowerCase().includes("show")
-            ? "Have you watched 'Zindagi Na Milegi Dobara'? My absolute all-time favorite! 🍿"
-            : clean.toLowerCase().includes("hi") || clean.toLowerCase().includes("hey")
-            ? "Hey again! Hope your evening is going wonderfully! 😊"
-            : "That's so true! Looking forward to chatting more in the rooms soon.";
+    // Also persist for recipient's storage so recipient session can view conversation
+    try {
+      const recipientPrefix = `chatverse_msgs_${receiverUser.id}`;
+      const recConvsRaw = localStorage.getItem(`${recipientPrefix}_convs`);
+      const recMsgsRaw = localStorage.getItem(`${recipientPrefix}_msgs`);
+      const recConvs: Record<string, Conversation> = recConvsRaw ? JSON.parse(recConvsRaw) : {};
+      const recMsgs: Record<string, PrivateMessage[]> = recMsgsRaw ? JSON.parse(recMsgsRaw) : {};
 
-        const replyTime = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-        const replyMsg: PrivateMessage = {
-          id: `msg-reply-${Date.now()}`,
-          conversationId: conv.id,
-          senderId: receiverUser.id,
-          receiverId: currentUserId,
-          text: replyText,
-          timestamp: replyTime,
-          createdAt: Date.now(),
-          status: "delivered",
-        };
+      const senderProfile: UserProfile = {
+        id: currentUserId,
+        name: user?.name || "Member",
+        username: user?.username || "member",
+        avatar: user?.avatar || "👤",
+        isGuest: user?.isGuest ?? true,
+        joinedAt: "Active",
+        bio: user?.bio || "",
+        interests: user?.interests || [],
+        role: user?.role || "User",
+        isOnline: true,
+        friendsCount: 0,
+      };
 
-        setMessagesMap((prevMsgs) => {
-          const list = prevMsgs[conv.id] || [];
-          const next = { ...prevMsgs, [conv.id]: [...list, replyMsg] };
-          try {
-            localStorage.setItem(`${storageKeyPrefix}_msgs`, JSON.stringify(next));
-          } catch {}
-          return next;
-        });
+      const recConvId = `conv-${currentUserId}`;
+      const existingRecConv = recConvs[recConvId];
+      recConvs[recConvId] = {
+        id: recConvId,
+        participantIds: [receiverUser.id, currentUserId],
+        otherUser: senderProfile,
+        lastMessage: newMsg,
+        unreadCount: (existingRecConv?.unreadCount || 0) + 1,
+        updatedAt: Date.now(),
+      };
+      recMsgs[recConvId] = [...(recMsgs[recConvId] || []), newMsg];
 
-        setConversationsMap((prevConvs) => {
-          const c = prevConvs[conv.id] || conv;
-          const next = {
-            ...prevConvs,
-            [conv.id]: {
-              ...c,
-              lastMessage: replyMsg,
-              unreadCount: c.unreadCount + 1,
-              updatedAt: Date.now(),
-            },
-          };
-          try {
-            localStorage.setItem(`${storageKeyPrefix}_convs`, JSON.stringify(next));
-          } catch {}
-          return next;
-        });
-      }, 2500);
-    }
+      localStorage.setItem(`${recipientPrefix}_convs`, JSON.stringify(recConvs));
+      localStorage.setItem(`${recipientPrefix}_msgs`, JSON.stringify(recMsgs));
+    } catch {}
+
+    // Broadcast in real-time to other tabs
+    try {
+      if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+        const channel = new BroadcastChannel("chatverse_dms");
+        channel.postMessage({ type: "NEW_DM", message: newMsg });
+        channel.close();
+      }
+    } catch {}
 
     return newMsg;
   };

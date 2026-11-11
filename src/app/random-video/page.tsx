@@ -116,22 +116,7 @@ export default function VideoCallPage() {
 
   // Side drawers (Chat & Participants)
   const [activeSideDrawer, setActiveSideDrawer] = useState<"none" | "chat" | "participants">("none");
-  const [inCallMessages, setInCallMessages] = useState<InCallMessage[]>([
-    {
-      id: "incall-1",
-      sender: "Riya Sharma",
-      avatar: "/images/avatar-riya.png",
-      text: "Hey! Can you hear me clearly? 😊",
-      time: "10:24 PM",
-    },
-    {
-      id: "incall-2",
-      sender: "Aman Verma",
-      avatar: "/images/avatar-aman.png",
-      text: "Yes, video quality is crystal clear! 🚀",
-      time: "10:25 PM",
-    },
-  ]);
+  const [inCallMessages, setInCallMessages] = useState<InCallMessage[]>([]);
   const [chatInputText, setChatInputText] = useState("");
   const [unreadChatCount, setUnreadChatCount] = useState(0);
 
@@ -228,32 +213,6 @@ export default function VideoCallPage() {
 
     setInCallMessages((prev) => [...prev, newMsg]);
     setChatInputText("");
-
-    // Simulate partner response after a brief pause
-    setTimeout(() => {
-      if (sessionState === "connected") {
-        const partnerName = partner?.name || "Riya Sharma";
-        const replies = [
-          "That sounds awesome! 🌟",
-          "Totally agree with you on that!",
-          "Haha yes, exactly! 🙌",
-          "Could you share your screen again?",
-          "Nice to meet you here on ChatVerse!",
-        ];
-        const randomReply = replies[Math.floor(Math.random() * replies.length)];
-        const replyMsg: InCallMessage = {
-          id: `incall-${Date.now()}`,
-          sender: partnerName,
-          avatar: partner?.avatar ? undefined : "/images/avatar-riya.png",
-          text: randomReply,
-          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        };
-        setInCallMessages((prev) => [...prev, replyMsg]);
-        if (activeSideDrawer !== "chat") {
-          setUnreadChatCount((prev) => prev + 1);
-        }
-      }
-    }, 2500);
   };
 
   const triggerReaction = (emoji: string) => {

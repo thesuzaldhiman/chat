@@ -30,7 +30,7 @@ export function FriendProvider({ children }: { children: React.ReactNode }) {
   // Storage key is scoped to current user identity (or global demo)
   const currentKey = user?.id || (user ? `user-${user.name}` : "default_social");
 
-  const [friendIds, setFriendIds] = useState<string[]>(["usr-riya", "usr-demo-2"]);
+  const [friendIds, setFriendIds] = useState<string[]>([]);
   const [receivedRequests, setReceivedRequests] = useState<FriendRequestItem[]>([]);
   const [sentRequests, setSentRequests] = useState<FriendRequestItem[]>([]);
   const [blockedUserIds, setBlockedUserIds] = useState<string[]>([]);
@@ -43,51 +43,28 @@ export function FriendProvider({ children }: { children: React.ReactNode }) {
       if (storedFriends) {
         setFriendIds(JSON.parse(storedFriends));
       } else {
-        // Initial default friends for rich experience: Riya & Sophia Chen
-        const defaults = ["usr-riya", "usr-demo-2"];
-        setFriendIds(defaults);
-        localStorage.setItem(`chatverse_friends_${currentKey}`, JSON.stringify(defaults));
+        setFriendIds([]);
       }
 
       const storedReceived = localStorage.getItem(`chatverse_req_recv_${currentKey}`);
       if (storedReceived) {
         setReceivedRequests(JSON.parse(storedReceived));
       } else {
-        // Initial received request from Aman Verma
-        const amanProfile = INITIAL_COMMUNITY_USERS.find((u) => u.username === "aman_786");
-        if (amanProfile && user) {
-          const initialReq: FriendRequestItem = {
-            id: `req-init-aman`,
-            fromUser: amanProfile,
-            toUser: {
-              id: user.id || "me",
-              name: user.name,
-              username: user.username || "me",
-              avatar: user.avatar,
-              isGuest: user.isGuest,
-              joinedAt: "Recent",
-              bio: user.bio || "",
-              interests: user.interests || [],
-              role: user.role || "User",
-              isOnline: true,
-              friendsCount: 2,
-            },
-            timestamp: "10 mins ago",
-            status: "pending",
-          };
-          setReceivedRequests([initialReq]);
-          localStorage.setItem(`chatverse_req_recv_${currentKey}`, JSON.stringify([initialReq]));
-        }
+        setReceivedRequests([]);
       }
 
       const storedSent = localStorage.getItem(`chatverse_req_sent_${currentKey}`);
       if (storedSent) {
         setSentRequests(JSON.parse(storedSent));
+      } else {
+        setSentRequests([]);
       }
 
       const storedBlocked = localStorage.getItem(`chatverse_blocked_${currentKey}`);
       if (storedBlocked) {
         setBlockedUserIds(JSON.parse(storedBlocked));
+      } else {
+        setBlockedUserIds([]);
       }
     } catch (e) {
       console.warn("Friend storage load error:", e);
