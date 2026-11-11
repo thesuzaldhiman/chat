@@ -225,6 +225,42 @@ export default function PixelPerfectChatRoom() {
     }
   };
 
+  const handleSendReaction = (emoji: string) => {
+    const currentName = user ? user.name : "Guest_9842";
+    const currentAvatar = user ? user.avatar : undefined;
+
+    const newMsg: MessageItem = {
+      id: `msg-${Date.now()}`,
+      senderName: currentName,
+      avatarUrl: currentAvatar && currentAvatar.startsWith("/") ? currentAvatar : undefined,
+      isGuest: user ? user.isGuest : true,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      text: `${emoji} reacted with ${emoji}`,
+      isOwn: true,
+    };
+
+    setMessages((prev) => [...prev, newMsg]);
+    showToast(`Sent ${emoji} to the room!`, "success");
+  };
+
+  const handleWave = () => {
+    const currentName = user ? user.name : "Guest_9842";
+    const currentAvatar = user ? user.avatar : undefined;
+
+    const newMsg: MessageItem = {
+      id: `msg-${Date.now()}`,
+      senderName: currentName,
+      avatarUrl: currentAvatar && currentAvatar.startsWith("/") ? currentAvatar : undefined,
+      isGuest: user ? user.isGuest : true,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      text: `👋 Waved to everyone in Love Chat!`,
+      isOwn: true,
+    };
+
+    setMessages((prev) => [...prev, newMsg]);
+    showToast("You waved to the room! 👋", "info");
+  };
+
   return (
     <div className="h-screen h-[100dvh] w-full overflow-hidden flex flex-col bg-[#F8FAFC] select-none text-[#1E293B]">
       {/* =========================================================================
@@ -706,7 +742,35 @@ export default function PixelPerfectChatRoom() {
           )}
 
           {/* ================= FIXED BOTTOM MESSAGE COMPOSER ================= */}
-          <div className="p-3 sm:p-3.5 border-t border-[#F1F4F8] bg-white flex-shrink-0 relative">
+          <div className="border-t border-[#F1F4F8] bg-white flex-shrink-0 relative">
+            {/* Quick Floating Reactions Tray (Locked Design System Signature) */}
+            <div className="px-4 py-1.5 bg-slate-50/70 border-b border-slate-100 flex items-center justify-between text-xs">
+              <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar">
+                <span className="text-[11px] font-bold text-[#64748B] mr-1 hidden sm:inline">Quick react:</span>
+                {["❤️", "🔥", "👏", "😂", "🎉", "✨"].map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    onClick={() => handleSendReaction(emoji)}
+                    className="p-1 px-1.5 rounded-lg hover:bg-white hover:shadow-2xs text-xs sm:text-sm transition-transform hover:scale-125 cursor-pointer"
+                    title={`React with ${emoji}`}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={handleWave}
+                className="text-[11px] font-bold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#DBEAFE] px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shadow-2xs active:scale-95 shrink-0"
+                title="Send wave to everyone in room"
+              >
+                <span>Wave 👋</span>
+              </button>
+            </div>
+
+            <div className="p-3 sm:p-3.5">
             {/* Quick Emoji Popover */}
             {showEmojiMenu && (
               <div className="absolute bottom-16 left-6 p-2 bg-white border border-[#E2E8F0] rounded-xl shadow-lg flex gap-1 z-20">
@@ -771,6 +835,7 @@ export default function PixelPerfectChatRoom() {
                 <Send className="w-3.5 h-3.5 stroke-[2.2] translate-x-[-0.5px]" />
               </button>
             </form>
+            </div>
           </div>
         </main>
 
@@ -857,27 +922,48 @@ export default function PixelPerfectChatRoom() {
 
             {/* Members List */}
             <div className="flex-1 overflow-y-auto space-y-1.5 my-1.5 pr-0.5">
-              {ONLINE_MEMBERS.map((mem) => (
-                <button
+              {ONLINE_MEMBERS.map((mem, idx) => (
+                <div
                   key={mem.id}
-                  type="button"
-                  onClick={() => handleOpenProfile(mem.name)}
-                  className="w-full flex items-center gap-2.5 py-1 px-1.5 rounded-xl hover:bg-slate-50 transition-colors text-left cursor-pointer group"
+                  className="w-full flex items-center justify-between py-1.5 px-2 rounded-xl hover:bg-slate-50 transition-colors group"
                 >
-                  <div className="relative w-6 h-6 rounded-full overflow-hidden flex-shrink-0 shadow-2xs">
-                    <Image
-                      src={mem.avatarUrl}
-                      alt={mem.name}
-                      fill
-                      sizes="24px"
-                      className="object-cover"
-                    />
-                    <span className="absolute bottom-0 right-0 w-1.5 h-1.5 rounded-full bg-[#22C55E] ring-1 ring-white"></span>
-                  </div>
-                  <span className="text-xs font-semibold text-[#1E293B] group-hover:text-[#2563EB] transition-colors truncate">
-                    {mem.name}
-                  </span>
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenProfile(mem.name)}
+                    className="flex items-center gap-2.5 min-w-0 text-left cursor-pointer"
+                  >
+                    <div className="relative w-7 h-7 rounded-full overflow-hidden flex-shrink-0 shadow-2xs">
+                      <Image
+                        src={mem.avatarUrl}
+                        alt={mem.name}
+                        fill
+                        sizes="28px"
+                        className="object-cover"
+                      />
+                      <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-[#10B981] ring-1 ring-white"></span>
+                    </div>
+                    <div className="min-w-0">
+                      <span className="text-xs font-semibold text-[#0F172A] group-hover:text-[#2563EB] transition-colors truncate block">
+                        {mem.name}
+                      </span>
+                      {idx === 0 && (
+                        <div className="flex items-center gap-0.5 h-1.5 mt-0.5" title="Speaking">
+                          <span className="w-0.5 h-2 bg-[#10B981] rounded-full animate-pulse"></span>
+                          <span className="w-0.5 h-2.5 bg-[#10B981] rounded-full animate-pulse [animation-delay:0.15s]"></span>
+                          <span className="w-0.5 h-1.5 bg-[#10B981] rounded-full animate-pulse [animation-delay:0.3s]"></span>
+                        </div>
+                      )}
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleOpenProfile(mem.name)}
+                    className="opacity-0 group-hover:opacity-100 text-[10px] font-bold text-[#2563EB] bg-[#EFF6FF] hover:bg-[#DBEAFE] px-2 py-0.5 rounded-md transition-all cursor-pointer"
+                  >
+                    + Friend
+                  </button>
+                </div>
               ))}
             </div>
 

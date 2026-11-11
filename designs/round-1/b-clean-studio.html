@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Direction B · Clean Studio Pro — ChatVerse Hero Screen</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Geist', -apple-system, sans-serif; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; }
+  </style>
+</head>
+<body class="bg-white text-[#0F172A] h-screen flex flex-col overflow-hidden">
+
+  <!-- Edge-to-Edge Top Navigation -->
+  <header class="h-12 px-4 bg-white border-b border-[#E2E8F0] flex items-center justify-between shrink-0 z-30">
+    <div class="flex items-center gap-3">
+      <div class="w-6 h-6 rounded-md bg-[#2563EB] flex items-center justify-center text-white font-bold text-xs">
+        CV
+      </div>
+      <span class="font-bold text-xs tracking-tight text-[#0F172A]">ChatVerse Studio</span>
+      <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600">Direction B · Clean Pro</span>
+    </div>
+
+    <div class="flex items-center gap-3 text-xs">
+      <div class="flex items-center gap-1.5 font-mono text-[11px] text-[#64748B]">
+        <span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+        <span>CONNECTED • 1,248 PEERS</span>
+      </div>
+      <button class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 rounded text-xs font-medium transition-colors">
+        Shortcut: ⌘K
+      </button>
+    </div>
+  </header>
+
+  <!-- 3-Column Studio -->
+  <div class="flex-1 flex overflow-hidden">
+
+    <!-- Column 1: Edge-to-Edge Slim Channel Rail -->
+    <aside class="w-60 border-r border-[#E2E8F0] bg-[#F8FAFC] flex flex-col shrink-0 hidden md:flex">
+      <div class="p-3 border-b border-[#E2E8F0]">
+        <input type="text" placeholder="Filter rooms (⌘F)..." class="w-full px-2.5 py-1 text-xs bg-white border border-[#E2E8F0] rounded placeholder-slate-400 focus:outline-none focus:border-[#2563EB]">
+      </div>
+
+      <div class="flex-1 overflow-y-auto py-2">
+        <div class="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Public Communities</div>
+
+        <!-- Active Room -->
+        <a class="flex items-center justify-between px-3 py-2 bg-[#EFF6FF] text-[#2563EB] border-l-2 border-[#2563EB] text-xs font-semibold cursor-pointer">
+          <span class="flex items-center gap-2 truncate">
+            <span>❤️</span>
+            <span class="truncate">love-chat</span>
+          </span>
+          <span class="text-[10px] font-mono text-[#2563EB]">1.2k</span>
+        </a>
+
+        <a class="flex items-center justify-between px-3 py-2 text-slate-600 hover:bg-slate-100 hover:text-[#0F172A] text-xs font-medium cursor-pointer transition-colors">
+          <span class="flex items-center gap-2 truncate">
+            <span>🌸</span>
+            <span class="truncate">friendship-zone</span>
+          </span>
+          <span class="text-[10px] font-mono text-slate-400">840</span>
+        </a>
+
+        <a class="flex items-center justify-between px-3 py-2 text-slate-600 hover:bg-slate-100 hover:text-[#0F172A] text-xs font-medium cursor-pointer transition-colors">
+          <span class="flex items-center gap-2 truncate">
+            <span>☕</span>
+            <span class="truncate">general-talk</span>
+          </span>
+          <span class="text-[10px] font-mono text-slate-400">1.4k</span>
+        </a>
+
+        <a class="flex items-center justify-between px-3 py-2 text-slate-600 hover:bg-slate-100 hover:text-[#0F172A] text-xs font-medium cursor-pointer transition-colors">
+          <span class="flex items-center gap-2 truncate">
+            <span>🌙</span>
+            <span class="truncate">late-night-talks</span>
+          </span>
+          <span class="text-[10px] font-mono text-slate-400">910</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Column 2: Center Pro Stream -->
+    <main class="flex-1 flex flex-col bg-white overflow-hidden">
+      <!-- Minimalist Room Bar -->
+      <div class="h-10 px-4 border-b border-[#E2E8F0] flex items-center justify-between shrink-0 bg-white">
+        <div class="flex items-center gap-2 text-xs">
+          <span class="font-bold text-[#0F172A]">#love-chat</span>
+          <span class="text-slate-300">|</span>
+          <span class="text-[#64748B] text-[11px] truncate">Topics: Dating, advice, heartfelt talks</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="px-2.5 py-1 text-[11px] font-medium border border-[#E2E8F0] hover:bg-slate-50 rounded">
+            Notification Settings
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Stream (Linear Style Density) -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-3">
+        <!-- Message Row 1 -->
+        <div class="flex items-start gap-3 hover:bg-slate-50/80 p-1.5 -mx-1.5 rounded transition-colors group">
+          <div class="w-7 h-7 rounded bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+            R
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-[#0F172A]">Riya ♡</span>
+              <span class="text-[10px] font-mono text-slate-400">10:24:12 PM</span>
+            </div>
+            <p class="text-xs text-slate-700 mt-0.5 leading-relaxed">
+              Hey everyone! Kaise ho sab? Aaj ka kya scene hai? 🌸
+            </p>
+          </div>
+          <!-- Quick Inline Hover Action -->
+          <div class="opacity-0 group-hover:opacity-100 flex items-center gap-1 shrink-0">
+            <button class="p-1 hover:bg-slate-200 rounded text-[11px]">❤️</button>
+            <button class="p-1 hover:bg-slate-200 rounded text-[11px]">↩ Reply</button>
+          </div>
+        </div>
+
+        <!-- Message Row 2 -->
+        <div class="flex items-start gap-3 hover:bg-slate-50/80 p-1.5 -mx-1.5 rounded transition-colors group">
+          <div class="w-7 h-7 rounded bg-blue-100 text-[#2563EB] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+            A
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-[#0F172A]">Aman_786</span>
+              <span class="text-[10px] font-mono text-slate-400">10:25:04 PM</span>
+            </div>
+            <p class="text-xs text-slate-700 mt-0.5 leading-relaxed">
+              Sab mast! Riya aap sunao, koi new movie recommend karo na? 😊
+            </p>
+          </div>
+          <div class="opacity-0 group-hover:opacity-100 flex items-center gap-1 shrink-0">
+            <button class="p-1 hover:bg-slate-200 rounded text-[11px]">🍿</button>
+            <button class="p-1 hover:bg-slate-200 rounded text-[11px]">↩ Reply</button>
+          </div>
+        </div>
+
+        <!-- Message Row 3 (Own) -->
+        <div class="flex items-start gap-3 bg-[#EFF6FF]/40 p-1.5 -mx-1.5 rounded group border border-[#2563EB]/10">
+          <div class="w-7 h-7 rounded bg-[#2563EB] text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+            Y
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-[#2563EB]">You (Guest)</span>
+              <span class="text-[10px] font-mono text-slate-400">10:27:18 PM</span>
+            </div>
+            <p class="text-xs text-slate-900 mt-0.5 leading-relaxed">
+              Hi all! Main new hu yaha, nice to meet everyone! 👋✨
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Linear Style Input Dock -->
+      <div class="p-3 border-t border-[#E2E8F0] bg-white">
+        <div class="border border-[#E2E8F0] rounded-lg p-2 focus-within:border-[#2563EB] focus-within:ring-1 focus-within:ring-[#2563EB]">
+          <textarea rows="2" placeholder="Message #love-chat (Press Enter to send)..." class="w-full text-xs text-[#0F172A] placeholder-slate-400 resize-none focus:outline-none"></textarea>
+          <div class="flex items-center justify-between pt-1 border-t border-slate-100">
+            <div class="flex items-center gap-2 text-slate-400 text-xs">
+              <button class="hover:text-slate-700 font-mono text-[11px]">@</button>
+              <button class="hover:text-slate-700 font-mono text-[11px]">#</button>
+              <button class="hover:text-slate-700 font-mono text-[11px]">😊</button>
+            </div>
+            <button class="px-3 py-1 bg-[#2563EB] text-white rounded text-xs font-medium hover:bg-[#1D4ED8]">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Column 3: Pro Active Roster -->
+    <aside class="w-56 border-l border-[#E2E8F0] bg-[#F8FAFC] flex flex-col shrink-0 hidden lg:flex">
+      <div class="p-3 border-b border-[#E2E8F0] flex items-center justify-between text-xs">
+        <span class="font-bold text-slate-700">Members — 54</span>
+      </div>
+      <div class="flex-1 overflow-y-auto p-2 space-y-1">
+        <div class="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-slate-200/50 text-xs cursor-pointer">
+          <div class="w-5 h-5 rounded bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-[10px]">R</div>
+          <span class="font-medium text-[#0F172A] truncate">Riya ♡</span>
+        </div>
+        <div class="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-slate-200/50 text-xs cursor-pointer">
+          <div class="w-5 h-5 rounded bg-blue-100 text-[#2563EB] flex items-center justify-center font-bold text-[10px]">A</div>
+          <span class="font-medium text-[#0F172A] truncate">Aman_786</span>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</body>
+</html>
